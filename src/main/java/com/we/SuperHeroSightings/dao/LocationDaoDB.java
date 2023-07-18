@@ -65,7 +65,7 @@ public class LocationDaoDB implements LocationDao {
     public void updateLocation(Location location) {
         //executes the SQL statement to update the location with provided values from Location object
         final String sql = "UPDATE location SET LocationName = ?, Description = ?, LocationAddress = ?, Latitude = ?, Longitude = ? WHERE LocationPK = ?";
-        jdbc.update(sql, location.getId(), location.getName(), location.getDescription(), location.getAddress(), location.getLatitude(), location.getLongitude());
+        jdbc.update(sql, location.getName(), location.getDescription(), location.getAddress(), location.getLatitude(), location.getLongitude(), location.getId());
     }
 
     //deletes a Location object from the database by its ID
