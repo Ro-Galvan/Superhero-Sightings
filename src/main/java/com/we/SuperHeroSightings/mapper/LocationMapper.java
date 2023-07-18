@@ -12,12 +12,12 @@ public class LocationMapper implements RowMapper<Location> {
     public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
         Location location = new Location();
 
-        location.setId(rs.getInt("locationID"));
-        location.setName(rs.getString("locationName"));
-        location.setDescription(rs.getString("locationDesc"));
-        location.setAddress(rs.getString("locationAddress"));
-        location.setLatitude(rs.getString("latitude"));
-        location.setLongitude(rs.getString("longitude"));
+        location.setId(rs.getInt("LocationPK"));
+        location.setName(rs.getString("LocationName"));
+        location.setDescription(rs.getString("Description"));
+        location.setAddress(rs.getString("LocationAddress"));
+        location.setLatitude(rs.getString("Latitude"));
+        location.setLongitude(rs.getString("Longitude"));
 
         return location;
     }
