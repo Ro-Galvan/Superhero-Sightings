@@ -87,7 +87,10 @@ public class HeroDaoDB implements HeroDao {
     @Override
     @Transactional
     public void deleteHeroByID(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final String DELETE_HERO_ORGANIZATION = "DELETE FROM heroorganization WHERE HeroPK = ?";
+        jdbc.update(DELETE_HERO_ORGANIZATION, id);
+        final String sql = "DELETE FROM hero WHERE HeroPk = ?";
+        jdbc.update(sql, id);
     }
 
     @Override
