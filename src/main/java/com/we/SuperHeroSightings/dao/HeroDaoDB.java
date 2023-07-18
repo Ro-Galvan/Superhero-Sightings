@@ -78,7 +78,7 @@ public class HeroDaoDB implements HeroDao {
     public void updateHero(Hero hero) {
         final String SQL = "UPDATE hero SET HeroName = ?, Type = ?, Description = ?, PowerPK = ? WHERE HeroPK = ?";
         jdbc.update(SQL,
-                hero.getId(),
+                hero.getName(),
                 hero.getType(),
                 hero.getDescription(),
                 hero.getPower().getId(),
@@ -104,26 +104,27 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     public List<Hero> getHerosByLocation(Location location) {
-//        try{
+        try{
+            final String SQL = "SELECT DISTINCT h.* FROM hero h INNER JOIN sighting s ON h.heroPK = s.heroPK WHERE s.locationPK = ?";
 //            final String SQL = "SELECT * FROM hero WHERE LocationPK = ?";
+            return jdbc.query(SQL, new HeroMapper(), location.getId());
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
+
+//        try{
+//            final String SQL = "SELECT h.* " +
+//                    "FROM hero h " +
+//                    "JOIN sighting s ON h.HeroPK = s.HeroPK " +
+//                    "JOIN location l ON s.LocationPK = l.LocationPK " +
+////                    can do by  l.LocationPK or l.LocationName but need to change return as well
+//                    "WHERE l.LocationPK = ?";
 //            return jdbc.query(SQL, new HeroMapper(), location.getId());
 //        }
 //        catch (DataAccessException ex){
 //            return null;
 //        }
-
-        try{
-            final String SQL = "SELECT h.* " +
-                    "FROM hero h " +
-                    "JOIN sighting s ON h.HeroPK = s.HeroPK " +
-                    "JOIN location l ON s.LocationPK = l.LocationPK " +
-//                    can do by  l.LocationPK or how it is
-                    "WHERE l.LocationName = ?";
-            return jdbc.query(SQL, new HeroMapper(), location.getName());
-        }
-        catch (DataAccessException ex){
-            return null;
-        }
 
 
     }
@@ -131,7 +132,8 @@ public class HeroDaoDB implements HeroDao {
     @Override
     public List<Hero> getHerosByOrganization(Organization organization) {
         try{
-            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?";
+            final String SQL = "SELECT DISTINCT h.* FROM hero h INNER JOIN heroorganization ho ON h.heroPK = ho.heroPK WHERE ho.organizationPK = ?";
+//            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?";
             return jdbc.query(SQL, new HeroMapper(), organization.getId());
         }
         catch (DataAccessException ex){
