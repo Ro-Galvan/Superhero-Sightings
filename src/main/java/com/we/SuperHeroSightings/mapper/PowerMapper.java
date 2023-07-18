@@ -10,7 +10,7 @@ public class PowerMapper implements RowMapper<Power> {
     @Override
     public Power mapRow(ResultSet rs, int rowNum) throws SQLException {
         Power power = new Power();
-        power.setId(rs.getInt("id"));
+        power.setId(rs.getInt("PowerPK"));
         power.setName(rs.getString("name"));
         power.setDescription(rs.getString("description"));
         return power;
