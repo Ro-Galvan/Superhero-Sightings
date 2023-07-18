@@ -92,7 +92,7 @@ public class HeroDaoDB implements HeroDao {
         jdbc.update(DELETE_HERO_ORGANIZATION, id);
 
         final String DELETE_HERO_SIGHTING = "DELETE FROM sighting WHERE HeroPK = ?";
-        jdbc.update(DELETE_HERO_SIGHTING, id)
+        jdbc.update(DELETE_HERO_SIGHTING, id);
 
         final String sql = "DELETE FROM hero WHERE HeroPk = ?";
         jdbc.update(sql, id);

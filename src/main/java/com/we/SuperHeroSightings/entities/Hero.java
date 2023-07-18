@@ -111,12 +111,17 @@ public class Hero {
         }
         return true;
     }
-    
-    
 
 
-
-    
-    
-    
+    @Override
+    public String toString() {
+        return "Hero{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                ", power=" + power +
+                ", organizations=" + organizations +
+                '}';
+    }
 }
