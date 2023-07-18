@@ -44,31 +44,33 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting addSighting(Sighting sighting) {
         try{
-            final String sqlInsertSighting = "INSERT INTO Sighting(SightingDate, LocationPK, HeroPK) "
-                    + "VALUES(?, ?, ?);";
+            final String sqlInsertSighting = 
+                    "INSERT INTO Sighting(SightingDate, Description, HeroPK, LocationPK) "
+                    + "VALUES(?, ?, ?, ?)";
             
             jdbc.update(sqlInsertSighting, 
                     sighting.getDate(),
-                    sighting.getLocation().getId(),
-                    sighting.getHero().getId());
+                    sighting.getDescription(),                    
+                    sighting.getHero().getId(), 
+                    sighting.getLocation().getId());
             
             int lastID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
             
-            Sighting sightingInserted = getSightingByID(lastID);
+            sighting.setId(lastID);
             
             final String GET_LOCATION_BY_ID = "SELECT * FROM location WHERE LocationPK = ?";
             final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
             
             Location location = jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), 
-                                            sightingInserted.getLocation().getId());
+                                            sighting.getLocation().getId());
             
             Hero hero = jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(), 
-                                        sightingInserted.getHero().getId());
+                                        sighting.getHero().getId());
             
-            sightingInserted.setHero(hero);
-            sightingInserted.setLocation(location);
+            sighting.setHero(hero);
+            sighting.setLocation(location);
             
-            return sightingInserted;
+            return sighting;
         }
         catch (DataAccessException ex){
             return null;
@@ -78,9 +80,14 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public void updateSighting(Sighting sighting) {
         final String sqlUpdate = 
-                "UPDATE Sighting(SightingDate, Description, LocationPK, superID) "
+                "UPDATE Sighting(SightingDate, Description, LocationPK, HeroPK) "
                 + "SET(?, ?, ?, ?) WHERE SightingPK = ?;";
-        jdbc.update(sqlUpdate, sighting.getId());
+        jdbc.update(sqlUpdate, 
+                sighting.getDate(), 
+                sighting.getDescription(), 
+                sighting.getLocation().getId(), 
+                sighting.getHero().getId(), 
+                sighting.getId());
     }
 
     @Override
