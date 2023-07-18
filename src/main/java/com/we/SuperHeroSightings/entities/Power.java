@@ -71,7 +71,13 @@ public class Power {
         }
         return true;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Power{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
