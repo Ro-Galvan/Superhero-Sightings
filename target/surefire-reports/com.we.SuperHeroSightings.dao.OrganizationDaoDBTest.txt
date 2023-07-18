@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: com.we.SuperHeroSightings.dao.OrganizationDaoDBTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.043 s <<< FAILURE! - in com.we.SuperHeroSightings.dao.OrganizationDaoDBTest
+testGetAllOrganizations  Time elapsed: 0 s  <<< ERROR!
+java.lang.UnsupportedOperationException: Not supported yet.
+	at com.we.SuperHeroSightings.dao.OrganizationDaoDBTest.setUp(OrganizationDaoDBTest.java:46)
+
+testGetOrganizationsByHero  Time elapsed: 0 s  <<< ERROR!
+java.lang.UnsupportedOperationException: Not supported yet.
+	at com.we.SuperHeroSightings.dao.OrganizationDaoDBTest.setUp(OrganizationDaoDBTest.java:46)
+
+testUpdateOrganization  Time elapsed: 0.007 s  <<< ERROR!
+java.lang.UnsupportedOperationException: Not supported yet.
+	at com.we.SuperHeroSightings.dao.OrganizationDaoDBTest.setUp(OrganizationDaoDBTest.java:46)
+
+testDeleteOrganizationByID  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.UnsupportedOperationException: Not supported yet.
+	at com.we.SuperHeroSightings.dao.OrganizationDaoDBTest.setUp(OrganizationDaoDBTest.java:46)
+
+testAddAndGetOrganizationByID  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.UnsupportedOperationException: Not supported yet.
+	at com.we.SuperHeroSightings.dao.OrganizationDaoDBTest.setUp(OrganizationDaoDBTest.java:46)
+
