@@ -47,7 +47,11 @@ public class HeroDaoDB implements HeroDao {
     public List<Hero> getAllHeros() {
         final String SQL = "SELECT * FROM hero";
         List<Hero> heroList = jdbc.query(SQL, new HeroMapper());
-//        TODO -am I missing calling one of the helper methods here before the return???
+//        added this
+        for (Hero hero : heroList){
+            hero.setPower(getPowerForHero(hero.getId()));
+            hero.setOrganizations(getOrganizationsForHero(hero.getId()));
+        }
         return heroList;
     }
 
@@ -100,39 +104,60 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     public List<Hero> getHerosByLocation(Location location) {
+//        try{
+//            final String SQL = "SELECT * FROM hero WHERE LocationPK = ?";
+//            return jdbc.query(SQL, new HeroMapper(), location.getId());
+//        }
+//        catch (DataAccessException ex){
+//            return null;
+//        }
+
         try{
-            final String SQL = "SELECT * FROM hero WHERE LocationPK = ?;";
-            return jdbc.query(SQL, new HeroMapper(), location.getId());
+            final String SQL = "SELECT h.* " +
+                    "FROM hero h " +
+                    "JOIN sighting s ON h.HeroPK = s.HeroPK " +
+                    "JOIN location l ON s.LocationPK = l.LocationPK " +
+//                    can do by  l.LocationPK or how it is
+                    "WHERE l.LocationName = ?";
+            return jdbc.query(SQL, new HeroMapper(), location.getName());
         }
         catch (DataAccessException ex){
             return null;
         }
+
+
     }
 
     @Override
     public List<Hero> getHerosByOrganization(Organization organization) {
         try{
-            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?;";
+            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?";
             return jdbc.query(SQL, new HeroMapper(), organization.getId());
         }
         catch (DataAccessException ex){
             return null;
         }
+//
+//        SELECT h.*
+//        FROM hero h
+//        JOIN sighting s ON h.HeroPK = s.HeroPK
+//        JOIN location l ON s.LocationPK = l.LocationPK
+//        WHERE OrganizationPK = ?;
     }
 
     //    ******************* private helper methods ********************
     private Power getPowerForHero(int id){
         final String SQL = "SELECT p.* FROM hero h " +
-                "JOIN power p ON h.PowerPK = p.PowerPK WHERE h.HeroName = ?;";
+                "JOIN power p ON h.PowerPK = p.PowerPK WHERE h.HeroPK = ?;";
         return jdbc.queryForObject(SQL, new PowerMapper(), id);
     }
 
     private List<Organization> getOrganizationsForHero(int id){
-        final String SQL = "SELECT o.*" +
-                "FROM hero h" +
+        final String SQL = "SELECT o.* " +
+                "FROM hero h " +
                 "JOIN heroorganization ho ON h.HeroPK = ho.HeroPK " +
                 "JOIN organization o ON ho.OrganizationPK = o.OrganizationPK " +
-                "WHERE h.HeroName = 'YourHeroName';";
+                "WHERE h.HeroPK = ?";
         return jdbc.query(SQL, new OrganizationMapper(), id);
     }
 
