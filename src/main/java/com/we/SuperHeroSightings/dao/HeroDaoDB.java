@@ -12,6 +12,7 @@ import java.util.List;
 import com.we.SuperHeroSightings.mapper.HeroMapper;
 import com.we.SuperHeroSightings.mapper.OrganizationMapper;
 import com.we.SuperHeroSightings.mapper.PowerMapper;
+import com.we.SuperHeroSightings.mapper.SightingsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,18 +90,34 @@ public class HeroDaoDB implements HeroDao {
     public void deleteHeroByID(int id) {
         final String DELETE_HERO_ORGANIZATION = "DELETE FROM heroorganization WHERE HeroPK = ?";
         jdbc.update(DELETE_HERO_ORGANIZATION, id);
+
+        final String DELETE_HERO_SIGHTING = "DELETE FROM sighting WHERE HeroPK = ?";
+        jdbc.update(DELETE_HERO_SIGHTING, id);
+
         final String sql = "DELETE FROM hero WHERE HeroPk = ?";
         jdbc.update(sql, id);
     }
 
     @Override
     public List<Hero> getHerosByLocation(Location location) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try{
+            final String SQL = "SELECT * FROM hero WHERE LocationPK = ?;";
+            return jdbc.query(SQL, new HeroMapper(), location.getId());
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
     }
 
     @Override
     public List<Hero> getHerosByOrganization(Organization organization) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try{
+            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?;";
+            return jdbc.query(SQL, new HeroMapper(), organization.getId());
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
     }
 
     //    ******************* private helper methods ********************
