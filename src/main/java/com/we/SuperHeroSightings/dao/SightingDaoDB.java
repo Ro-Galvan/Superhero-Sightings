@@ -23,7 +23,7 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting getSightingByID(int id) {
         try{
-            return jdbc.queryForObject("SELECT * FROM sighting WHERE sightingID = ?", new SightingsMapper(), id);
+            return jdbc.queryForObject("SELECT * FROM sighting WHERE SightingPK = ?", new SightingsMapper(), id);
         }
         catch (DataAccessException ex){
             return null;
@@ -80,13 +80,11 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public void updateSighting(Sighting sighting) {
         final String sqlUpdate = 
-                "UPDATE Sighting(SightingDate, Description, LocationPK, HeroPK) "
-                + "SET(?, ?, ?, ?) WHERE SightingPK = ?;";
+                "UPDATE Sighting SET SightingDate = ?, Description = ? WHERE SightingPK = ?;";
+        
         jdbc.update(sqlUpdate, 
                 sighting.getDate(), 
                 sighting.getDescription(), 
-                sighting.getLocation().getId(), 
-                sighting.getHero().getId(), 
                 sighting.getId());
     }
 
