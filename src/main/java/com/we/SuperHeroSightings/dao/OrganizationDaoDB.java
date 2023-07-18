@@ -115,7 +115,7 @@ public class OrganizationDaoDB implements OrganizationDao {
                 +"INNER JOIN heroorganization horg ON org.OrganizationPK = horg.OrganizationPK "
                 +"WHERE horg.HeroPK = ?";
 
-        List<Organization> organizations = jdbc.query(sql, new Object[]{hero.getId()}, new OrganizationMapper());
+        List<Organization> organizations = jdbc.query(sql, new OrganizationMapper(), hero.getId());
 
         return organizations;
     }
