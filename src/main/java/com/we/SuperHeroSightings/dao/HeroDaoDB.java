@@ -104,47 +104,27 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     public List<Hero> getHerosByLocation(Location location) {
-        try{
-            final String SQL = "SELECT DISTINCT h.* FROM hero h INNER JOIN sighting s ON h.heroPK = s.heroPK WHERE s.locationPK = ?";
-//            final String SQL = "SELECT * FROM hero WHERE LocationPK = ?";
-            return jdbc.query(SQL, new HeroMapper(), location.getId());
+//        declare a list of heroes first then use a loop to go through the list then apply private methods to set power and organizations
+        final String SQL = "SELECT DISTINCT h.* FROM hero h INNER JOIN sighting s ON h.heroPK = s.heroPK WHERE s.locationPK = ?";
+        List<Hero> heroes = jdbc.query(SQL, new HeroMapper(), location.getId());
+//          need power set & organization set
+        for (Hero hero : heroes){
+            hero.setPower(getPowerForHero(hero.getId()));
+            hero.setOrganizations(getOrganizationsForHero(hero.getId()));
         }
-        catch (DataAccessException ex){
-            return null;
-        }
-
-//        try{
-//            final String SQL = "SELECT h.* " +
-//                    "FROM hero h " +
-//                    "JOIN sighting s ON h.HeroPK = s.HeroPK " +
-//                    "JOIN location l ON s.LocationPK = l.LocationPK " +
-////                    can do by  l.LocationPK or l.LocationName but need to change return as well
-//                    "WHERE l.LocationPK = ?";
-//            return jdbc.query(SQL, new HeroMapper(), location.getId());
-//        }
-//        catch (DataAccessException ex){
-//            return null;
-//        }
-
+            return heroes;
 
     }
 
-    @Override
-    public List<Hero> getHerosByOrganization(Organization organization) {
-        try{
+        @Override
+        public List<Hero> getHerosByOrganization(Organization organization) {
             final String SQL = "SELECT DISTINCT h.* FROM hero h INNER JOIN heroorganization ho ON h.heroPK = ho.heroPK WHERE ho.organizationPK = ?";
-//            final String SQL = "SELECT * FROM hero WHERE OrganizationPK = ?";
-            return jdbc.query(SQL, new HeroMapper(), organization.getId());
-        }
-        catch (DataAccessException ex){
-            return null;
-        }
-//
-//        SELECT h.*
-//        FROM hero h
-//        JOIN sighting s ON h.HeroPK = s.HeroPK
-//        JOIN location l ON s.LocationPK = l.LocationPK
-//        WHERE OrganizationPK = ?;
+            List<Hero> heroes = jdbc.query(SQL, new HeroMapper(), organization.getId());
+                for (Hero hero : heroes){
+                    hero.setPower(getPowerForHero(hero.getId()));
+                    hero.setOrganizations(getOrganizationsForHero(hero.getId()));
+                }
+                return heroes;
     }
 
     //    ******************* private helper methods ********************
