@@ -53,7 +53,7 @@ public class PowerDaoDB implements PowerDao {
     @Override
     @Transactional
     public Power addPower(Power power) {
-        final String INSERT_POWER = "INSERT INTO power(name, description) "
+        final String INSERT_POWER = "INSERT INTO power(Power, Description) "
                 + "VALUES(?,?)";
         jdbc.update(INSERT_POWER,
                 power.getName(),
@@ -75,7 +75,7 @@ public class PowerDaoDB implements PowerDao {
     //------------------ updatePower() -----------------//
     @Override
     public void updatePower(Power power) {
-        final String UPDATE_POWER = "UPDATE power SET name = ?, description = ? "
+        final String UPDATE_POWER = "UPDATE power SET Power = ?, Description = ? "
                 + "WHERE PowerPK = ?";
         jdbc.update(UPDATE_POWER,
                 power.getName(),

@@ -11,8 +11,8 @@ public class PowerMapper implements RowMapper<Power> {
     public Power mapRow(ResultSet rs, int rowNum) throws SQLException {
         Power power = new Power();
         power.setId(rs.getInt("PowerPK"));
-        power.setName(rs.getString("name"));
-        power.setDescription(rs.getString("description"));
+        power.setName(rs.getString("Power"));
+        power.setDescription(rs.getString("Description"));
         return power;
     }
 }
