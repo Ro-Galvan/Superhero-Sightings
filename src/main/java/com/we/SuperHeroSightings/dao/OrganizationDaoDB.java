@@ -71,8 +71,10 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         List<Hero> heroes = organization.getMembers();
 
-        for (Hero hero : heroes) {
-            jdbc.update(bridgeSql, hero.getId(), organization.getId());
+        if (heroes != null) {
+            for (Hero hero : heroes) {
+                jdbc.update(bridgeSql, hero.getId(), organization.getId());
+            }
         }
 
         return organization;
@@ -100,13 +102,22 @@ public class OrganizationDaoDB implements OrganizationDao {
 
     @Override
     public void deleteOrganizationByID(int id) {
-        final String sql = "DELETE FROM `organization` WHERE OrganizationPK = ?";
-        jdbc.update(sql, id);
+        final String hOrgSql = "DELETE FROM heroorganization WHERE OrganizationPK = ?";
+        jdbc.update(hOrgSql, id);
+        final String orgSql = "DELETE FROM `organization` WHERE OrganizationPK = ?";
+        jdbc.update(orgSql, id);
     }
 
     @Override
     public List<Organization> getOrganizationsByHero(Hero hero) {
-        return null;
+        final String sql = "SELECT org.OrganizationPK, org.OrganizationName, org.`Type`, org.`Description`, org.OrganizationAddress, org.Phone, org.ContactInfo "
+                +"FROM `organization` org "
+                +"INNER JOIN heroorganization horg ON org.OrganizationPK = horg.OrganizationPK "
+                +"WHERE horg.HeroPK = ?";
+
+        List<Organization> organizations = jdbc.query(sql, new Object[]{hero.getId()}, new OrganizationMapper());
+
+        return organizations;
     }
 
 }
