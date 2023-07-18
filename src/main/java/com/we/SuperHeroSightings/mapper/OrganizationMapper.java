@@ -18,7 +18,7 @@ public class OrganizationMapper implements RowMapper<Organization> {
         org.setAddress(rs.getString("OrganizationAddress"));
         org.setPhone(rs.getString("Phone"));
         org.setContact(rs.getString("ContactInfo"));
-        org.setMembers(new ArrayList<>());
+//        org.setMembers(new ArrayList<>());
         return org;
     }
 }
