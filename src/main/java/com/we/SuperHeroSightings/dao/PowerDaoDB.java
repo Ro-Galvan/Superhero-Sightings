@@ -5,6 +5,8 @@ import com.we.SuperHeroSightings.entities.Power;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import com.we.SuperHeroSightings.mapper.PowerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,29 +24,77 @@ public class PowerDaoDB implements PowerDao {
     @Autowired
     JdbcTemplate jdbc;
 
+
+    //-------------- getPowerByID --------------//
     @Override
     public Power getPowerByID(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        try {
+            // Executes a SQL query to retrieve a power by its ID from the "power" table.
+            final String SELECT_POWER_BY_ID = "SELECT * FROM power WHERE PowerPK = ?";
+            // Uses a custom "PowerMapper" class to map the query result to a Superpower object.
+            return jdbc.queryForObject(SELECT_POWER_BY_ID, new PowerMapper(), id);
+        } catch (DataAccessException ex) {
+            return null;
+            // In case of any exception or data access error, returns null.
+        }
     }
 
+    //-------------- getAllPowers() --------------//
     @Override
     public List<Power> getAllPowers() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //-Executes a SQL query to retrieve all powers from the "power" table.
+        final String SELECT_ALL_POWERS = "SELECT * FROM power";
+        //-Uses a custom "PowerMapper" class to map the query result to a list of power objects.
+        return jdbc.query(SELECT_ALL_POWERS, new PowerMapper());
     }
 
+    //-------------- addPower() --------------//
     @Override
+    @Transactional
     public Power addPower(Power power) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final String INSERT_POWER = "INSERT INTO power(name, description) "
+                + "VALUES(?,?)";
+        jdbc.update(INSERT_POWER,
+                power.getName(),
+                power.getDescription());
+        // Executes an SQL INSERT statement to add a new power to the "power" table.
+        // Uses the values of name and description from the provided Power object as parameters for the INSERT statement.
+
+
+        // Retrieves the ID of the newly inserted power.
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+
+        // Sets the newly generated ID in the Power object.
+        power.setId(newId);
+
+        // Returns the Power object with the updated ID.
+        return power;
     }
 
+    //------------------ updatePower() -----------------//
     @Override
     public void updatePower(Power power) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final String UPDATE_POWER = "UPDATE power SET name = ?, description = ? "
+                + "WHERE PowerPK = ?";
+        jdbc.update(UPDATE_POWER,
+                power.getName(),
+                power.getDescription(),
+                power.getId());
+        // Executes an SQL UPDATE statement to update the power's name and description in the "power" table.
+        // Uses the values of name, description, and ID from the provided Power object as parameters for the UPDATE statement.
     }
 
+    //------------------ deletePowerByID() -----------------//
     @Override
+    @Transactional
     public void deletePowerByID(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // Executes an SQL DELETE statement to delete a power from the "power" table based on its ID.
+        final String DELETE_SUPERPOWER = "DELETE FROM power WHERE PowerPK  = ?;";
+        // Uses the id parameter as a parameter for the DELETE statement.
+        jdbc.update(DELETE_SUPERPOWER, id);
+
+
     }
     
 
