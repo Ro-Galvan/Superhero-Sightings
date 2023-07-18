@@ -8,6 +8,7 @@ import com.we.SuperHeroSightings.entities.Organization;
 import java.sql.*;
 import java.util.List;
 
+import com.we.SuperHeroSightings.mapper.HeroMapper;
 import com.we.SuperHeroSightings.mapper.OrganizationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,52 +32,49 @@ public class OrganizationDaoDB implements OrganizationDao {
     @Override
     public Organization getOrganizationByID(int id) {
         try {
-            final String sql = "SELECT OrganizationPK, OrganizationName, `Type`, `Description`, OrganizationAddress, Phone, ContactInfo "
-                    +"FROM `organization` "
-                    +"WHERE OrganizationPK = ?";
-            return jdbc.queryForObject(sql, new OrganizationMapper(), id);
-        } catch (EmptyResultDataAccessException ex) {
+            final String sql = "SELECT * FROM `organization` WHERE OrganizationPK = ?";
+            Organization org = jdbc.queryForObject(sql, new OrganizationMapper(), id);
+            org.setMembers(getHeroesByOrganization(org));
+            return org;
+        } catch (DataAccessException ex) {
             return null;
         }
+    }
+
+    private List<Hero> getHeroesByOrganization(Organization organization){
+        final String sql = "SELECT DISTINCT h.* "
+                +"FROM hero h "
+                +"INNER JOIN heroorganization ho "
+                +"ON h.heroPK = ho.heroPK "
+                +"WHERE organizationPK = ?";
+        return  jdbc.query(sql, new HeroMapper(), organization.getId());
     }
 
     @Override
     public List<Organization> getAllOrganizations() {
         final String sql = "SELECT * FROM organization";
-        return jdbc.query(sql, new OrganizationMapper());
+        List<Organization> orgs = jdbc.query(sql, new OrganizationMapper());
+        for (Organization org : orgs) {
+            org.setMembers(getHeroesByOrganization(org));
+        }
+        return orgs;
     }
 
     @Override
     public Organization addOrganization(Organization organization) {
         final String sql = "INSERT INTO `organization`(OrganizationName, `Type`, `Description`, OrganizationAddress, Phone, ContactInfo) "
                 +"VALUES(?, ?, ?, ?, ?, ?)";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbc.update((Connection conn ) -> {
-            PreparedStatement statement = conn.prepareStatement(
-                    sql,
-                    Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, organization.getName());
-            statement.setString(2, organization.getType());
-            statement.setString(3, organization.getDescription());
-            statement.setString(4, organization.getAddress());
-            statement.setString(5, organization.getPhone());
-            statement.setString(6, organization.getContact());
-            return statement;
-        }, keyHolder);
+        jdbc.update(sql,
+                organization.getName(),
+                organization.getType(),
+                organization.getDescription(),
+                organization.getAddress(),
+                organization.getPhone(),
+                organization.getContact());
 
-        organization.setId(keyHolder.getKey().intValue());
-
-        final String bridgeSql = "INSERT INTO heroorganization (HeroPK, OrganizationPK) VALUES (?, ?)";
-
-        List<Hero> heroes = organization.getMembers();
-
-        if (heroes != null) {
-            for (Hero hero : heroes) {
-                jdbc.update(bridgeSql, hero.getId(), organization.getId());
-            }
-        }
-
+        int orgId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        organization.setId(orgId);
         return organization;
     }
 
@@ -110,10 +108,10 @@ public class OrganizationDaoDB implements OrganizationDao {
 
     @Override
     public List<Organization> getOrganizationsByHero(Hero hero) {
-        final String sql = "SELECT org.OrganizationPK, org.OrganizationName, org.`Type`, org.`Description`, org.OrganizationAddress, org.Phone, org.ContactInfo "
-                +"FROM `organization` org "
-                +"INNER JOIN heroorganization horg ON org.OrganizationPK = horg.OrganizationPK "
-                +"WHERE horg.HeroPK = ?";
+        final String sql = "SELECT o.*"
+                +"FROM `organization` o "
+                +"INNER JOIN heroorganization ho ON o.OrganizationPK = ho.OrganizationPK "
+                +"WHERE ho.HeroPK = ?";
 
         List<Organization> organizations = jdbc.query(sql, new OrganizationMapper(), hero.getId());
 
