@@ -5,6 +5,7 @@ import com.we.SuperHeroSightings.entities.Hero;
 import com.we.SuperHeroSightings.entities.Location;
 import com.we.SuperHeroSightings.entities.Sighting;
 import com.we.SuperHeroSightings.mapper.HeroMapper;
+import com.we.SuperHeroSightings.mapper.LocationMapper;
 import com.we.SuperHeroSightings.mapper.SightingsMapper;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,7 +44,8 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting addSighting(Sighting sighting) {
         try{
-            final String sqlInsertSighting = "INSERT INTO Sighting(SightingDate, LocationPK, HeroPK) VALUES(?, ?, ?);";
+            final String sqlInsertSighting = "INSERT INTO Sighting(SightingDate, LocationPK, HeroPK) "
+                    + "VALUES(?, ?, ?);";
             
             jdbc.update(sqlInsertSighting, 
                     sighting.getDate(),
@@ -53,8 +55,17 @@ public class SightingDaoDB implements SightingDao {
             int lastID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
             
             Sighting sightingInserted = getSightingByID(lastID);
-            Hero hero = 
-            sightingInserted.setCharacter(character);
+            
+            final String GET_LOCATION_BY_ID = "SELECT * FROM location WHERE LocationPK = ?";
+            final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
+            
+            Location location = jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), 
+                                            sightingInserted.getLocation().getId());
+            
+            Hero hero = jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(), 
+                                        sightingInserted.getHero().getId());
+            
+            sightingInserted.setHero(hero);
             sightingInserted.setLocation(location);
             
             return sightingInserted;
