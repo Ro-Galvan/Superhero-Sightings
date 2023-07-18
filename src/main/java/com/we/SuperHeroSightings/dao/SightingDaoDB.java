@@ -23,7 +23,7 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting getSightingByID(int id) {
         try{
-            return jdbc.queryForObject("SELECT * FROM sighting WHERE sightingID = ?", new SightingsMapper(), id);
+            return jdbc.queryForObject("SELECT * FROM sighting WHERE SightingPK = ?", new SightingsMapper(), id);
         }
         catch (DataAccessException ex){
             return null;
@@ -58,14 +58,8 @@ public class SightingDaoDB implements SightingDao {
             
             sighting.setId(lastID);
             
-            final String GET_LOCATION_BY_ID = "SELECT * FROM location WHERE LocationPK = ?";
-            final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
-            
-            Location location = jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), 
-                                            sighting.getLocation().getId());
-            
-            Hero hero = jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(), 
-                                        sighting.getHero().getId());
+            Location location = getLocationForSighting(sighting.getLocation().getId());            
+            Hero hero = getHeroForSighting(sighting.getHero().getId());
             
             sighting.setHero(hero);
             sighting.setLocation(location);
@@ -76,17 +70,35 @@ public class SightingDaoDB implements SightingDao {
             return null;
         }
     }
+    
+    private Location getLocationForSighting(int locationId){
+        try{
+            final String GET_LOCATION_BY_ID = "SELECT * FROM location WHERE LocationPK = ?";            
+            return jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), locationId);     
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
+    }
+    
+    private Hero getHeroForSighting(int heroId){
+        try{
+            final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
+            return jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(),heroId);
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
+    }
 
     @Override
     public void updateSighting(Sighting sighting) {
         final String sqlUpdate = 
-                "UPDATE Sighting(SightingDate, Description, LocationPK, HeroPK) "
-                + "SET(?, ?, ?, ?) WHERE SightingPK = ?;";
+                "UPDATE Sighting SET SightingDate = ?, Description = ? WHERE SightingPK = ?;";
+        
         jdbc.update(sqlUpdate, 
                 sighting.getDate(), 
                 sighting.getDescription(), 
-                sighting.getLocation().getId(), 
-                sighting.getHero().getId(), 
                 sighting.getId());
     }
 
