@@ -11,9 +11,7 @@ import javax.validation.constraints.Size;
  * @author jtriolo
  */
 public class Hero {
-    
     private int id;
-    
     private String name;
     private String type;
     private String description;    
