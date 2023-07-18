@@ -15,17 +15,18 @@ public class SightingsMapper implements RowMapper<Sighting>{
     @Override
     public Sighting mapRow(ResultSet rs, int rowNum) throws SQLException {
         
-        Hero character =  new Hero();
-        character.setId(rs.getInt("superID"));
+        Hero hero =  new Hero();
+        hero.setId(rs.getInt("HeroPK"));
         
         Location location = new Location();
-        location.setId(rs.getInt("locationID"));
+        location.setId(rs.getInt("LocationPK"));
         
         Sighting sighting = new Sighting();
         
-        sighting.setId(rs.getInt("sightingID"));
-        sighting.setDate(rs.getObject("dateSighted", LocalDateTime.class));     
-        sighting.setHero(character);
+        sighting.setId(rs.getInt("SightingPK"));
+        sighting.setDate(rs.getObject("SightingDate", LocalDateTime.class)); 
+        sighting.setDescription(rs.getString("Description"));
+        sighting.setHero(hero);
         sighting.setLocation(location);
 
         return sighting;
