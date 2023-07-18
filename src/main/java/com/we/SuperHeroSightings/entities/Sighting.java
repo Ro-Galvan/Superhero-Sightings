@@ -102,8 +102,10 @@ public class Sighting {
         return true;
     }
 
-
-    
+    @Override
+    public String toString() {
+        return "Sighting{" + "id=" + id + ", description=" + description + ", date=" + date + ", hero=" + hero + ", location=" + location + '}';
+    }   
     
     
 }
