@@ -3,9 +3,11 @@ package com.we.SuperHeroSightings.dao;
 
 import com.we.SuperHeroSightings.entities.Hero;
 import com.we.SuperHeroSightings.entities.Location;
+import com.we.SuperHeroSightings.entities.Power;
 import com.we.SuperHeroSightings.entities.Sighting;
 import com.we.SuperHeroSightings.mapper.HeroMapper;
 import com.we.SuperHeroSightings.mapper.LocationMapper;
+import com.we.SuperHeroSightings.mapper.PowerMapper;
 import com.we.SuperHeroSightings.mapper.SightingsMapper;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +25,15 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting getSightingByID(int id) {
         try{
-            return jdbc.queryForObject("SELECT * FROM sighting WHERE SightingPK = ?", new SightingsMapper(), id);
+            Sighting sighting = jdbc.queryForObject("SELECT * FROM sighting WHERE SightingPK = ?", new SightingsMapper(), id);
+            
+            Location location = getLocationForSighting(sighting.getLocation().getId());            
+            Hero hero = getHeroForSighting(sighting.getHero().getId());
+            
+            sighting.setHero(hero);
+            sighting.setLocation(location);
+            
+            return sighting;
         }
         catch (DataAccessException ex){
             return null;
@@ -34,7 +44,9 @@ public class SightingDaoDB implements SightingDao {
     public List<Sighting> getAllSightings() {
         try{
             final String sql = "SELECT * FROM Sighting";
-            return jdbc.query(sql, new SightingsMapper());
+            List<Sighting> list = jdbc.query(sql, new SightingsMapper());
+            
+            return setHeroLocationToSightingList(list);
         }
         catch (DataAccessException ex){
             return null;
@@ -84,7 +96,25 @@ public class SightingDaoDB implements SightingDao {
     private Hero getHeroForSighting(int heroId){
         try{
             final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
-            return jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(),heroId);
+            Hero hero = jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(),heroId);
+            
+            int idPower = hero.getPower().getId();
+            Power powerHero = getPowerForHero(idPower);
+            hero.setPower(powerHero);
+            
+            return hero;
+        }
+        catch (DataAccessException ex){
+            return null;
+        }
+    }
+    
+    private Power getPowerForHero(int powerId){
+        try{
+            return jdbc.queryForObject(
+                    "SELECT * FROM power WHERE PowerPK = ?", 
+                    new PowerMapper(), 
+                    powerId);
         }
         catch (DataAccessException ex){
             return null;
@@ -112,7 +142,9 @@ public class SightingDaoDB implements SightingDao {
     public List<Sighting> getSightingsByDate(LocalDateTime date) {
         try{
             final String sql = "SELECT * FROM Sighting WHERE SightingDate = ?;";
-            return jdbc.query(sql, new SightingsMapper(), date);
+            List<Sighting> list = jdbc.query(sql, new SightingsMapper(), date);
+                        
+            return setHeroLocationToSightingList(list);
         }
         catch (DataAccessException ex){
             return null;
@@ -123,18 +155,31 @@ public class SightingDaoDB implements SightingDao {
     public List<Sighting> getSightingsByLocation(Location location) {
         try{
             final String sql = "SELECT * FROM Sighting WHERE LocationPK = ?;";
-            return jdbc.query(sql, new SightingsMapper(), location.getId());
+            List<Sighting> list = jdbc.query(sql, new SightingsMapper(), location.getId());
+
+            return setHeroLocationToSightingList(list);
         }
         catch (DataAccessException ex){
             return null;
         }
+    }
+    
+    private List<Sighting> setHeroLocationToSightingList(List<Sighting> list){
+        
+            list.forEach(sighting -> {
+                    sighting.setHero(getHeroForSighting(sighting.getHero().getId()));
+                    sighting.setLocation(getLocationForSighting(sighting.getLocation().getId()));
+                });
+            
+            return list;
     }
 
     @Override
     public List<Sighting> getSightingsByHero(Hero hero) {
         try{
             final String sql = "SELECT * FROM Sighting WHERE HeroPK = ?;";
-            return jdbc.query(sql, new SightingsMapper(), hero.getId());
+            List<Sighting> list = jdbc.query(sql, new SightingsMapper(), hero.getId());
+            return setHeroLocationToSightingList(list);
         }
         catch (DataAccessException ex){
             return null;
