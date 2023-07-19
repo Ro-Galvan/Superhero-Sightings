@@ -15,7 +15,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization getOrganizationByID(int id) {
-        return null;
+        Organization org = organizationDao.getOrganizationByID(id);
+        if (org == null){
+            throw new RuntimeException("Could not find an organization with id " +id+".");
+        }
+        return org;
     }
 
     @Override
@@ -30,7 +34,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void updateOrganization(Organization organization) {
-
+        Organization org = organizationDao.getOrganizationByID(organization.getId());
+        if (org == null){
+            throw new RuntimeException("Could not find an organization with id " +organization.getId()+".");
+        }
+        organizationDao.updateOrganization(organization);
     }
 
     @Override
@@ -40,6 +48,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<Organization> getOrganizationsByHero(Hero hero) {
-        return null;
+        return organizationDao.getOrganizationsByHero(hero);
     }
 }

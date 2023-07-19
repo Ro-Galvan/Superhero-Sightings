@@ -25,8 +25,8 @@ public class OrganizationController {
         return "organization";
     }
 
-    @GetMapping("organizations/add")
-    public String displayAddOrganization(Model model) {
+    @GetMapping("/organizations/add")
+    public String displayAddOrganization() {
         return "addOrganization";
     }
 
@@ -40,6 +40,30 @@ public class OrganizationController {
         org.setPhone(request.getParameter("phone"));
         org.setContact(request.getParameter("contact"));
         service.addOrganization(org);
+
+        return "redirect:/organizations";
+    }
+
+    @GetMapping("/organizations/edit")
+    public String displayEditOrganization(HttpServletRequest request, Model model){
+        int id = Integer.parseInt(request.getParameter("id"));
+        Organization organization = service.getOrganizationByID(id);
+
+        model.addAttribute("organization", organization);
+        return "editOrganization";
+    }
+
+    @PostMapping("/organizations/edit")
+    public String editOrganization(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        Organization org = service.getOrganizationByID(id);
+        org.setName(request.getParameter("name"));
+        org.setType(request.getParameter("type"));
+        org.setDescription(request.getParameter("description"));
+        org.setAddress(request.getParameter("address"));
+        org.setPhone(request.getParameter("phone"));
+        org.setContact(request.getParameter("contact"));
+        service.updateOrganization(org);
 
         return "redirect:/organizations";
     }
