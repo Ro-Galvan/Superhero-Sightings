@@ -25,7 +25,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization addOrganization(Organization organization) {
-        return null;
+        return organizationDao.addOrganization(organization);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void deleteOrganizationByID(int id) {
-
+        organizationDao.deleteOrganizationByID(id);
     }
 
     @Override
