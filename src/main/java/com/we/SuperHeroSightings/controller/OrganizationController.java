@@ -68,6 +68,15 @@ public class OrganizationController {
         return "redirect:/organizations";
     }
 
+    @GetMapping("/organizations/details")
+    public String displayOrganizationDetails(HttpServletRequest request, Model model){
+        int id = Integer.parseInt(request.getParameter("id"));
+        Organization organization = service.getOrganizationByID(id);
+
+        model.addAttribute("organization", organization);
+        return "detailOrganization";
+    }
+
     @GetMapping("deleteOrganization")
     public String deleteOrganization(HttpServletRequest request){
         int id = Integer.parseInt(request.getParameter("id"));
