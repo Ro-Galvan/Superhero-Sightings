@@ -89,12 +89,9 @@ public class PowerDaoDB implements PowerDao {
     @Override
     @Transactional
     public void deletePowerByID(int id) {
-        // Delete heroes and hero-organization associations that reference the power.
-        final String DELETE_HERO_ORGANIZATION = "DELETE FROM heroorganization WHERE HeroPK IN (SELECT HeroPK FROM hero WHERE PowerPK = ?)";
-        jdbc.update(DELETE_HERO_ORGANIZATION, id);
-
-        final String DELETE_HERO = "DELETE FROM hero WHERE PowerPK = ?";
-        jdbc.update(DELETE_HERO, id);
+        // Update heroes to set the PowerPK to null.
+        final String UPDATE_HERO = "UPDATE hero SET PowerPK = NULL WHERE PowerPK = ?";
+        jdbc.update(UPDATE_HERO, id);
 
         // Executes an SQL DELETE statement to delete a power from the "power" table based on its ID.
         final String DELETE_POWER = "DELETE FROM power WHERE PowerPK = ?";

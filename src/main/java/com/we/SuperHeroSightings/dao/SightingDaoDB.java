@@ -97,11 +97,11 @@ public class SightingDaoDB implements SightingDao {
         try{
             final String GET_HERO_BY_ID = "SELECT * FROM Hero WHERE HeroPK = ?";
             Hero hero = jdbc.queryForObject(GET_HERO_BY_ID, new HeroMapper(),heroId);
-            
-            int idPower = hero.getPower().getId();
-            Power powerHero = getPowerForHero(idPower);
-            hero.setPower(powerHero);
-            
+            if (hero != null && hero.getPower() != null) {
+                int idPower = hero.getPower().getId();
+                Power powerHero = getPowerForHero(idPower);
+                hero.setPower(powerHero);
+            }
             return hero;
         }
         catch (DataAccessException ex){
