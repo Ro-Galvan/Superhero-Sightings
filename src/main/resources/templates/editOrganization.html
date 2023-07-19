@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Course Manager</title>
+</head>
+<body>
+<!-- Header/Nav-->
+<div class="container">
+    <div class="row m-4">
+        <div class="col text-center border border-dark">
+            <h1>Hero Education and Relationship Organization</h1>
+        </div>
+    </div>
+    <div class="row m-4 border border-dark">
+        <div class="col text-center m-3">
+            <a href="/heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
+        </div>
+        <div class="col text-center m-3">
+            <a href="/powers" class="btn btn-outline-primary btn-lg">Powers</a>
+        </div>
+        <div class="col text-center m-3">
+            <a href="/locations" class="btn btn-outline-primary btn-lg">Locations</a>
+        </div>
+        <div class="col text-center m-3">
+            <a href="/organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+        </div>
+        <div class="col text-center m-3">
+            <a href="/sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+        </div>
+    </div>
+    <!-- Add Organization-->
+    <div class="row m-4 border border-dark">
+        <div class="col text-center m-3">
+            <div class="text-center">
+                <h2>Edit Organization</h2>
+                <br>
+                <div class="col-7 text-center m-auto">
+                    <form th:action="@{/organizations/edit(id=${organization.id})}" method="POST">
+                        <div class="form-group row">
+                            <label for="name" class="col-3 col-form-label">
+                                Organization</label>
+                            <div class="col-9">
+                                <input type="text" name="name"
+                                       id="name" class="form-control" th:value="${organization.name}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="type" class="col-3 col-form-label">Type</label>
+                            <div class="col-9">
+                                <select name="type" id="type" class="form-control" th:value="${organization.type}">
+                                    <option value="Hero">Hero</option>
+                                    <option value="Villain">Villain</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-3 col-form-label">
+                                Description</label>
+                            <div class="col-9">
+                                <input type="text" name="description"
+                                       id="description" class="form-control" th:value="${organization.description}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="address" class="col-3 col-form-label">
+                                Address</label>
+                            <div class="col-9">
+                                <input type="text" name="address"
+                                       id="address" class="form-control" th:value="${organization.address}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone" class="col-3 col-form-label">
+                                Phone</label>
+                            <div class="col-9">
+                                <input type="text" name="phone"
+                                       id="phone" class="form-control" th:value="${organization.phone}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="contact" class="col-3 col-form-label">
+                                Contact</label>
+                            <div class="col-9">
+                                <input type="text" name="contact"
+                                       id="contact" class="form-control" th:value="${organization.contact}"/>
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-outline-primary" data-toggle="btn btn-primary">Edit Organization</button>
+                        <a href="/organizations">
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="btn btn-secondary">Cancel</button>
+                        </a>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
