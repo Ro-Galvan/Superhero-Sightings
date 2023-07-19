@@ -37,8 +37,29 @@
     </div>
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <p>Welcome to Super Sightings! Here you can report and view super hero and super villain sightings!</p>
+            <h2 class="mt-3 mb-3">Locations</h2>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Location Name</th>
+                    <th>Description</th>
+                    <th>Details</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="location : ${locations}">
+                    <td th:text="${location.LocationName">Location Name</td>
+                    <td th:text="${location.Description"> Description</td>
+                    <td>Details</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 </div>
 <!-- End main body -->
 
