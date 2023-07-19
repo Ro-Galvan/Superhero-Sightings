@@ -1,10 +1,23 @@
 package com.we.SuperHeroSightings.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.we.SuperHeroSightings.dao.LocationDao;
+import com.we.SuperHeroSightings.entities.Location;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
-@RequestMapping("/")
+import java.util.List;
+
+@Controller
 public class LocationController {
+    @Autowired
+    LocationDao locationDao;
 
+    @GetMapping("locations")
+    public String displayLocations(Model model) {
+        List<Location> locations = locationDao.getAllLocations();
+        model.addAttribute("locations", locations);
+        return "locations";
+    }
 }
