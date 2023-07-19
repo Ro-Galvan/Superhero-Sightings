@@ -45,14 +45,18 @@ public class HeroDaoDB implements HeroDao {
 
     @Override
     public List<Hero> getAllHeros() {
-        final String SQL = "SELECT * FROM hero";
-        List<Hero> heroList = jdbc.query(SQL, new HeroMapper());
+        try {
+            final String SQL = "SELECT * FROM hero";
+            List<Hero> heroList = jdbc.query(SQL, new HeroMapper());
 //        added this
-        for (Hero hero : heroList){
-            hero.setPower(getPowerForHero(hero.getId()));
-            hero.setOrganizations(getOrganizationsForHero(hero.getId()));
+            for (Hero hero : heroList){
+                hero.setPower(getPowerForHero(hero.getId()));
+                hero.setOrganizations(getOrganizationsForHero(hero.getId()));
+            }
+            return heroList;
+        } catch (DataAccessException ex) {
+            return null;
         }
-        return heroList;
     }
 
     @Override
@@ -129,9 +133,13 @@ public class HeroDaoDB implements HeroDao {
 
     //    ******************* private helper methods ********************
     private Power getPowerForHero(int id){
-        final String SQL = "SELECT p.* FROM hero h " +
-                "JOIN power p ON h.PowerPK = p.PowerPK WHERE h.HeroPK = ?;";
-        return jdbc.queryForObject(SQL, new PowerMapper(), id);
+        try {
+            final String SQL = "SELECT p.* FROM hero h " +
+                    "JOIN power p ON h.PowerPK = p.PowerPK WHERE h.HeroPK = ?;";
+            return jdbc.queryForObject(SQL, new PowerMapper(), id);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     private List<Organization> getOrganizationsForHero(int id){
