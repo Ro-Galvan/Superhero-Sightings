@@ -4,7 +4,7 @@ import com.we.SuperHeroSightings.entities.Location;
 
 import java.util.List;
 
-public interface LocationServiceInterface {
+public interface LocationService {
     Location getLocationById(int id);
     List<Location> getAllLocations();
     Location addLocation(Location location);
