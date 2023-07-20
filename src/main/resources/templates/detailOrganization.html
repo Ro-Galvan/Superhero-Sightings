@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <title>Organization</title>
+</head>
+<body>
+<!-- Header/Nav-->
+<div class="container">
+  <div class="row m-4">
+    <div class="col text-center border border-dark">
+      <h1>Hero Education and Relationship Organization</h1>
+    </div>
+  </div>
+  <div class="row m-4 border border-dark">
+    <div class="col text-center m-3">
+      <a href="/heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
+    </div>
+    <div class="col text-center m-3">
+      <a href="/powers" class="btn btn-outline-primary btn-lg">Powers</a>
+    </div>
+    <div class="col text-center m-3">
+      <a href="/locations" class="btn btn-outline-primary btn-lg">Locations</a>
+    </div>
+    <div class="col text-center m-3">
+      <a href="/organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+    </div>
+    <div class="col text-center m-3">
+      <a href="/sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+    </div>
+  </div>
+  <!-- Display Organizations-->
+  <div class="col my-4 border border-dark">
+    <h2 class="text-center p-2" th:utext="${organization.name}"></h2>
+    <div class="col mx-auto ml-n3">
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Type:</div>
+        <div class="col p-2" th:utext="${organization.type}"></div>
+      </div>
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Description:</div>
+        <div class="col p-2" th:utext="${organization.description}"></div>
+      </div>
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Address:</div>
+        <div class="col p-2" th:utext="${organization.address}"></div>
+      </div>
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Phone:</div>
+        <div class="col p-2" th:utext="${organization.phone}"></div>
+      </div>
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Contact:</div>
+        <div class="col p-2" th:utext="${organization.contact}"></div>
+      </div>
+      <div class="row mb-2">
+        <div class="col p-2 font-weight-bold text-right">Members:</div>
+        <div class="col p-2 ">
+          <div class="pb-2" th:each="member : ${organization.members}" th:utext="${member.name}"></div>
+        </div>
+      </div>
+      <br>
+      <div class="d-flex justify-content-between w-75 mx-auto mb-4">
+        <a href="#" th:href="@{/organizations/edit(id=${organization.id})}"><button type="button" class="btn btn btn-primary">Edit</button></a>
+        <a href="#" th:href="@{/deleteOrganization(id=${organization.id})}"><button type="button" class="btn btn btn-primary">Delete</button></a>
+        <a href="/organizations"><button type="button" class="btn btn-primary">Back To Organization</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
