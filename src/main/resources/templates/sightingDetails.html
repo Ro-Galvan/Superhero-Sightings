@@ -15,7 +15,7 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <h1>Hero Education and Relationship Organization</h1>
+            <h1><a href="/" class="text-dark">Hero Education and Relationship Organization</a></h1>
         </div>
     </div>
     <div class="row m-4 border border-dark">
@@ -35,12 +35,56 @@
             <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-    <div class="row m-4">
-        <div class="col text-center border border-dark">
-            <p>Welcome to Super Sightings! Here you can report and view super hero and super villain sightings!</p>
-        </div>
 </div>
 <!-- End main body -->
+
+<div class="container">            
+    <div class="row m-4 border border-dark">
+        <div class="row">
+            <div class="col-6 text-right"><strong>ID</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.id}">display id</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Name:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.hero.name}">display name</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Address:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.location.address}">display address</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Location:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.location.name}">display location</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Description:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.description}">display description</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Date:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.date}">display date</span>
+            </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between w-50 mx-auto mb-4">
+            <a href="#" th:href="@{/editSighting(id=${sighting.id})}">
+                <button type="button" class="btn btn btn-primary">Edit</button>
+            </a>
+            <a href="#" th:href="@{/deleteSighting(id=${sighting.id})}">
+                <button type="button" class="btn btn btn-primary">Delete</button>
+            </a>
+            <a href="/sightings">
+                <button type="button" class="btn btn-primary">Back to Sightings</button>
+            </a>
+          </div>
+    </div>
+</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

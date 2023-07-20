@@ -8,10 +8,11 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Organization</title>
+    <title>Hero</title>
 </head>
 <body>
-<!-- Header/Nav-->
+<!-- Main Body of Page -->
+
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
@@ -35,33 +36,35 @@
             <a href="/sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-    <!-- Edit Organization-->
-    <div class="col-12 m-1 text-center"
-         th:if="${!errors.isEmpty()}">
-        <p class="alert alert-danger" th:each="error : ${errors}"
-           th:text="${error.message}">Error message</p>
-    </div>
+
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
             <div class="text-center">
-                <h2>Edit Organization</h2>
+                <h2>Edit Sighting</h2>
                 <br>
                 <div class="col-7 text-center m-auto">
-                    <form th:action="@{/organizations/edit(id=${organization.id})}" method="POST">
+                    <form th:action="@{editSighting(id=${sighting.id})}" method="POST">
                         <div class="form-group row">
                             <label for="name" class="col-3 col-form-label">
-                                Organization</label>
+                                Hero/Villain:</label>
                             <div class="col-9">
-                                <input type="text" name="name"
-                                       id="name" class="form-control" th:value="${organization.name}"/>
-                            </div>
+                                <select id="hero" name="heroId" class="form-control" >
+                                    <option th:each="hero : ${heroes}"
+                                            th:value="${hero.id}"
+                                            th:text="${hero.name}">
+                                        -- Select a Hero/Villain</option>
+                                </select>
+                            </div>   
+                            
                         </div>
                         <div class="form-group row">
-                            <label for="type" class="col-3 col-form-label">Type</label>
+                            <label for="type" class="col-3 col-form-label">Location:</label>
                             <div class="col-9">
-                                <select name="type" id="type" class="form-control" />
-                                    <option value="Hero" th:selected="${organization.type.startsWith('H')}">Hero</option>
-                                    <option value="Villain" th:selected="${organization.type.startsWith('V')}">Villain</option>
+                                <select id="location" name="locationId" class="form-control" >
+                                    <option th:each="location : ${locations}"
+                                            th:value="${location.id}"
+                                            th:text="${location.name}">
+                                        -- Select a location:</option>
                                 </select>
                             </div>
                         </div>
@@ -70,37 +73,24 @@
                                 Description</label>
                             <div class="col-9">
                                 <input type="text" name="description"
-                                       id="description" class="form-control" th:value="${organization.description}"/>
+                                       id="description" class="form-control" 
+                                       th:value="${sighting.description}"/>
                             </div>
                         </div>
+                        
+                        
                         <div class="form-group row">
                             <label for="address" class="col-3 col-form-label">
-                                Address</label>
+                                Date:</label>
                             <div class="col-9">
-                                <input type="text" name="address"
-                                       id="address" class="form-control" th:value="${organization.address}"/>
+                                <input type="date" name="date" id="date" max="2023-07-20" class="form-control"
+                                       th:value="${sighting.date}">                                
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="phone" class="col-3 col-form-label">
-                                Phone</label>
-                            <div class="col-9">
-                                <input type="text" name="phone"
-                                       id="phone" class="form-control" th:value="${organization.phone}"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="contact" class="col-3 col-form-label">
-                                Contact</label>
-                            <div class="col-9">
-                                <input type="text" name="contact"
-                                       id="contact" class="form-control" th:value="${organization.contact}"/>
-                            </div>
-                        </div>
+                        </div>                            
                         <br>
-                        <button type="submit" class="btn btn-primary">Edit Organization</button>
-                        <a href="/organizations">
-                            <button type="button" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Edit Sighting</button>
+                        <a href="/sightings">
+                            <button type="button" class="btn btn-danger">Cancel</button>
                         </a>
                         <br>
                     </form>
@@ -109,12 +99,11 @@
         </div>
     </div>
 </div>
-
-
+<!-- End main body -->
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
-</html>
+</html>;

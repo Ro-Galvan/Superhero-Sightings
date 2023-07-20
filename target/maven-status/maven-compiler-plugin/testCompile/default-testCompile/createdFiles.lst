@@ -1,6 +1,0 @@
-com\we\SuperHeroSightings\SuperHeroSightingsApplicationTests.class
-com\we\SuperHeroSightings\dao\HeroDaoDBTest.class
-com\we\SuperHeroSightings\dao\LocationDaoDBTest.class
-com\we\SuperHeroSightings\dao\OrganizationDaoDBTest.class
-com\we\SuperHeroSightings\dao\SightingDaoDBTest.class
-com\we\SuperHeroSightings\dao\PowerDaoDBTest.class

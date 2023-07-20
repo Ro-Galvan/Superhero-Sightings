@@ -21,7 +21,7 @@ public class Organization {
     @Pattern(regexp = "^(Villain|Hero)$", message = "Type must be selected")
     private String type;
     @NotBlank(message = "Description must not be blank")
-    @Size(max = 255, message="Name must be fewer than 255 characters")
+    @Size(max = 255, message="Description must be fewer than 255 characters")
     private String description;
     @NotBlank(message = "Address must not be blank")
     @Size(max = 150, message="Address must be fewer than 150 characters")
