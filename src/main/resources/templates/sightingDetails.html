@@ -15,11 +15,9 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-            <h1>Hero Education and Relationship Organization</h1>
+            <h1><a href="/" class="text-dark">Hero Education and Relationship Organization</a></h1>
         </div>
     </div>
-
-<!--    *********** menu *********** -->
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
             <a href="heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
@@ -37,43 +35,56 @@
             <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-
-<!--    *********** Table *********** -->
-        <div class="row m-4 border border-dark">
-            <div class="col text-center m-3">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Hero/Villain</th>
-                        <th>Type</th>
-                        <th>Power</th>
-                        <th>Details</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="hero : ${heroes}">
-                        <td th:text="${hero.name}">Hero/Villain</td>
-                        <td th:text="${hero.type}">Type</td>
-                        <td th:text="${hero.power.name}">Power</td>
-                        <td><a href="#" th:href="@{/heroDetail(id=${hero.id})}">Details</a></td>
-                        <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
-                        <td><a href="#" th:href="@{/deleteHero(id=${hero.id})}">Delete</a></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <a href="addHero">
-<!--                <a href="/heroes/addHero">-->
-<!--                <a href="#" th:href="@{/addHero}">-->
-                    <button type="submit" class="btn btn-primary">Add Hero</button>
-<!--                    <button type="submit" class="btn btn-primary"><a href="#" th:href="@{/addHero}">Add Hero</a></button>-->
-                </a>
-            </div>
-        </div>
-
 </div>
 <!-- End main body -->
+
+<div class="container">            
+    <div class="row m-4 border border-dark">
+        <div class="row">
+            <div class="col-6 text-right"><strong>ID</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.id}">display id</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Name:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.hero.name}">display name</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Address:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.location.address}">display address</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Location:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.location.name}">display location</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Description:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.description}">display description</span>
+            </div>
+
+            <div class="col-6 text-right"><strong>Date:</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${sighting.date}">display date</span>
+            </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between w-50 mx-auto mb-4">
+            <a href="#" th:href="@{/editSighting(id=${sighting.id})}">
+                <button type="button" class="btn btn btn-primary">Edit</button>
+            </a>
+            <a href="#" th:href="@{/deleteSighting(id=${sighting.id})}">
+                <button type="button" class="btn btn btn-primary">Delete</button>
+            </a>
+            <a href="/sightings">
+                <button type="button" class="btn btn-primary">Back to Sightings</button>
+            </a>
+          </div>
+    </div>
+</div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -81,4 +92,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
-</html>
+</html>;

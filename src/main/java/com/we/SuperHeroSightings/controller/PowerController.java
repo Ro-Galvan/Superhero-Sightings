@@ -57,7 +57,7 @@ public class PowerController {
 
 
     }
-    
+
     @GetMapping("detailPower")
     public String detailPower(Integer id, Model model) {
         // Get the Power object with the given ID from the database
