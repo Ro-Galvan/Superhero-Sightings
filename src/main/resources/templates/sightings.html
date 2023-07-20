@@ -74,35 +74,39 @@
         
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
-            <div class="form-group row">
-                <label for="address" class="col-3 col-form-label">
-                    Display Sightings by Date</label>
-                <div class="col-4">
-                    <input type="datetime-local" name="date" id="date" max="2023-07-20" class="form-control">                                
-                </div>
-            </div> 
-            
-            <button type="submit" class="btn btn-primary">Search</button>
-            <a href="sightings"><button type="button" class="btn btn-danger">Reset Settings</button> </a>
+            <form action="sightingsByDate" method="GET">
+                <div class="form-group row">
+                    <label for="address" class="col-3 col-form-label">
+                        Display Sightings by Date</label>
+                    <div class="col-4">
+                        <input type="datetime-local" name="date" id="date" max="2023-07-20" class="form-control">                                
+                    </div>
+                </div> 
+
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="sightings"><button type="button" class="btn btn-danger">Reset Settings</button> </a>
+            </form>
         </div>
     </div>
     
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
-            <div class="form-group row">
-                <label for="type" class="col-3 col-form-label">Display Sightings by Location:</label>
-                <div class="col-4">
-                    <select id="location" name="locationId" class="form-control" >
-                        <option th:each="location: ${locations}"
-                                th:value="${location.id}"
-                                th:text="${location.name}">
-                            -- Select a location:</option>
-                    </select>
+            <form action="sightingsByLocation" method="GET">
+                <div class="form-group row">
+                    <label for="type" class="col-3 col-form-label">Display Sightings by Location:</label>
+                    <div class="col-4">
+                        <select id="location" name="locationId" class="form-control" >
+                            <option th:each="location: ${locations}"
+                                    th:value="${location.id}"
+                                    th:text="${location.name}">
+                                -- Select a location:</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Search</button>
-            <a href="sightings"><button type="button" class="btn btn-danger">Reset Settings</button> </a>
-
+            
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="sightings"><button type="button" class="btn btn-danger">Reset Settings</button> </a>
+            </form>
         </div>
     </div>
     
