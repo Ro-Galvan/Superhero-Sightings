@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
 //    (superhero/supervillain, location, and time) in the system.
 
 @Controller
-//@RequestMapping("sightings")
+//@RequestMapping("/")
 public class SightingsController {
 
     @Autowired
@@ -43,10 +43,23 @@ public class SightingsController {
     public String getAllSighting(Model model) {  
         List<Sighting> sightings = sightingsService.getAllSightings();
         model.addAttribute("sightings", sightings);
+        
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("locations", locations);
+        
         return "sightings";
     }
     
     //    It must have a screen(s) to create
+    @GetMapping("addSighting")
+    public String addSightingPage(Model model, HttpServletRequest request) {
+        //int id = Integer.parseInt(request.getParameter("id"));
+        //Sighting sighting = sightingsService.getSightingByID(id);
+        //model.addAttribute("sighting", sighting);
+        return "addSighting";
+
+    }
+    
     @PostMapping("addSighting")
     public String addSighting(@RequestBody Sighting sighting, HttpServletRequest request) {
         String heroId = request.getParameter("heroId");
@@ -90,17 +103,18 @@ public class SightingsController {
     }
     
     //    It must have a screen(s) to delete
-    @DeleteMapping("deleteSighting")
-    public String deleteSighting(Integer id) {
+    @GetMapping("deleteSighting")
+    public String deleteSighting(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
         sightingsService.deleteSightingByID(id);
         return "redirect:/sightings";
     } 
     
-    @GetMapping("SightingDetails")
+    @GetMapping("sightingDetails")
     public String courseDetail(Integer id, Model model) {
         Sighting sighting = sightingsService.getSightingByID(id);
         model.addAttribute("sighting", sighting);
-        return "SightingDetail";
+        return "sightingDetails";
     }
 
 }
