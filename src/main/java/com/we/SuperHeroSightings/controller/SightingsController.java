@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.we.SuperHeroSightings.service.LocationService;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Controller;
 
 //    It must have a screen(s) to create, view, edit, and delete superhero/supervillain sighting 
@@ -44,31 +46,35 @@ public class SightingsController {
         List<Sighting> sightings = sightingsService.getAllSightings();
         model.addAttribute("sightings", sightings);
         
-        List<Location> locations = locationService.getAllLocations();
-        model.addAttribute("locations", locations);
-        
         return "sightings";
     }
     
     //    It must have a screen(s) to create
     @GetMapping("addSighting")
-    public String addSightingPage(Model model, HttpServletRequest request) {
-        //int id = Integer.parseInt(request.getParameter("id"));
-        //Sighting sighting = sightingsService.getSightingByID(id);
-        //model.addAttribute("sighting", sighting);
+    public String addSightingPage(Model model, HttpServletRequest request) {        
+        List<Hero> heroes = heroService.getAllHeroes();
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("heroes", heroes);
+        model.addAttribute("locations", locations);
+        
         return "addSighting";
-
     }
     
     @PostMapping("addSighting")
-    public String addSighting(@RequestBody Sighting sighting, HttpServletRequest request) {
+    public String addSighting(Model model, HttpServletRequest request) {     
+         
         String heroId = request.getParameter("heroId");
         String locationId = request.getParameter("locationId");
         
+        Sighting sighting = new Sighting();
         sighting.setHero(heroService.getHeroByID(Integer.parseInt(heroId)));
-
-        sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));
+        sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));        
+        sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
+        sighting.setDescription(request.getParameter("description"));
+        
         sightingsService.addSighting(sighting);
+        
+        model.addAttribute("localDateTime", LocalDateTime.now());
         
         return "redirect:/sightings";
 
@@ -80,24 +86,29 @@ public class SightingsController {
         
         Sighting sighting = sightingsService.getSightingByID(id);
         
-        List<Hero> heros = heroService.getAllHeroes();
+        List<Hero> heroes = heroService.getAllHeroes();
         List<Location> locations = locationService.getAllLocations();
         
         model.addAttribute("sighting", sighting);
-        model.addAttribute("heros", heros);
+        model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
+        
         return "editSighting";
         
     }
     @PostMapping("editSighting")
-    public String performEditCourse(Sighting sighting, HttpServletRequest request) {
+    public String editSighting(Integer id, HttpServletRequest request) {
+        Sighting sighting = sightingsService.getSightingByID(id);
+        
         String heroId = request.getParameter("heroId");
         String locationId = request.getParameter("locationId");
-        
         sighting.setHero(heroService.getHeroByID(Integer.parseInt(heroId)));
-
         sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));
-        sightingsService.addSighting(sighting);
+        
+        sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
+        sighting.setDescription(request.getParameter("description"));        
+        
+        sightingsService.updateSighting(sighting);
         
         return "redirect:/sightings";
     }
