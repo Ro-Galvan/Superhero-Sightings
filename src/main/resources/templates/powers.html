@@ -55,9 +55,9 @@
                         <td th:text="${power.id}">ID</td>
                         <td th:text="${power.name}">Power</td>
                         <td th:text="${power.description}">Description</td>
-                        <td>Details</td>
-                        <td>Edit</td>
-                        <td>Delete</td>
+                        <td><a href="#" th:href="@{/detailPower(id=${power.id})}">Details</a></td>
+                        <td><a href="#" th:href="@{/editPower(id=${power.id})}">Edit</a></td>
+                        <td><a href="#" th:href="@{/deletePower(id=${power.id})}">Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
