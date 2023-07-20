@@ -29,6 +29,8 @@ import javax.validation.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import org.springframework.validation.FieldError;
 
 //    It must have a screen(s) to create, view, edit, and delete superhero/supervillain sighting 
 //    (superhero/supervillain, location, and time) in the system.
@@ -49,7 +51,6 @@ public class SightingsController {
     /*This Validator will look at the annotations we have added to the entity and check if the field matches them. 
     Any data that does not match is added as an error to a list it gives back to us. */
     Set<ConstraintViolation<Sighting>> violations = new HashSet<>();
-    Sighting sightingObjError;
     
     @GetMapping("sightings")
     public String getAllSighting(Model model) {  
@@ -95,10 +96,8 @@ public class SightingsController {
         List<Hero> heroes = heroService.getAllHeroes();
         List<Location> locations = locationService.getAllLocations();
         model.addAttribute("heroes", heroes);
-        model.addAttribute("locations", locations);
-        
+        model.addAttribute("locations", locations);        
         model.addAttribute("errors", violations);
-        model.addAttribute("sightingObjError", sightingObjError);
         
         return "addSighting";
     }
@@ -152,12 +151,40 @@ public class SightingsController {
         model.addAttribute("sighting", sighting);
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
+        model.addAttribute("errors", violations);
         
         return "editSighting";
         
     }
     
     @PostMapping("editSighting")
+    public String editSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
+        int heroId = Integer.parseInt(request.getParameter("heroId"));
+        int locationId = Integer.parseInt(request.getParameter("locationId")); 
+
+        if (heroId != 0 && locationId !=0) {
+            sighting.setHero(heroService.getHeroByID(heroId));
+            sighting.setLocation(locationService.getLocationById(locationId));
+        } else {
+            FieldError error = new FieldError("sighting", "description", "Must include one description");
+            result.addError(error);
+        }
+
+        if (result.hasErrors()) {
+            List<Sighting> sightings = sightingsService.getAllSightings();
+            model.addAttribute("sightings", sightings);
+
+            List<Location> locations = locationService.getAllLocations();
+            model.addAttribute("locations", locations);
+            return "sightings";
+        }
+
+        sightingsService.updateSighting(sighting);
+
+        return "redirect:/sightings";
+    }
+    
+    /*@PostMapping("editSighting")
     public String editSighting(@Valid Sighting sighting, Integer id, BindingResult result, HttpServletRequest request, Model model) {
 //        try{
 //            
@@ -199,7 +226,7 @@ public class SightingsController {
         //sightingsService.updateSighting(sighting);
         
         return "redirect:/sightings";
-    }
+    }*/
     
     //    It must have a screen(s) to delete
     @GetMapping("deleteSighting")

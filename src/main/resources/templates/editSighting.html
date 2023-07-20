@@ -12,7 +12,6 @@
 </head>
 <body>
 <!-- Main Body of Page -->
-
 <div class="container">
 
     <div class="row m-4">
@@ -39,7 +38,7 @@
     </div>
 </div>
 <div class="container">   
-
+   
     <div class="row m-4 border border-dark">
         
         <div class="col text-center m-3">
@@ -79,12 +78,13 @@
                                 <input type="text" name="description"
                                        id="description" class="form-control" 
                                        th:value="${sighting.description}"/>
+                                <div th:if="${#fields.hasErrors('sighting.description')}">
+                                    <p th:each="error : ${#fields.errors('sighting.description')}"
+                                       class="alert alert-danger" th:text="${error}">
+                                        Bad description</p>
+                                </div>
                             </div>
-                            <div th:if="${#fields.hasErrors('sighting.description')}">
-                                <p th:each="error: ${#fields.errors('sighting.description')}"
-                                   class="alert alert-danger" th:text="${error}">
-                                    Bad description</p>
-                            </div>
+                            
                         </div>
                         
                         
