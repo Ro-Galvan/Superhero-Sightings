@@ -50,14 +50,15 @@
                 </thead>
                 <tbody>
                 <tr th:each="location : ${locations}">
-                    <td th:text="${location.LocationName">Location Name</td>
-                    <td th:text="${location.Description"> Description</td>
-                    <td>Details</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
+                    <td th:text="${location.name}">Location Name</td>
+                    <td th:text="${location.description}">Description</td>
+                    <td><a href="#" th:href="@{/locationDetail(id=${location.id})}">Details</a></td>
+                    <td><a href="#" th:href="@{/editLocation(id=${location.id})}">Edit</a></td>
+                    <td><a href="#" th:href="@{/deleteLocation(id=${location.id})}">Delete</a></td>
                 </tr>
                 </tbody>
             </table>
+            <a href="#" th:href="@{/addLocation}" class="btn btn-primary mb-3">Add Location</a>
         </div>
     </div>
 </div>
