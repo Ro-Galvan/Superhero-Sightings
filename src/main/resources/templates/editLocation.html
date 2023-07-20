@@ -40,7 +40,7 @@
     <div class="row m-4">
         <div class="col text-center border border-dark">
             <h2 class="mt-3 mb-3">Edit Location</h2>
-            <form action="/editLocation" method="POST">
+            <form th:action="@{/editLocation(id=${location.id})}" method="POST">
                 <div class="form-group row">
                     <label for="name" class="col-3 col-form-label">Name:</label>
                     <div class="col-9">
