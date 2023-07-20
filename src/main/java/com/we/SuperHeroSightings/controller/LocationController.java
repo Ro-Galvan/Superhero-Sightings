@@ -29,6 +29,7 @@ public class LocationController {
     @Autowired
     HeroService heroService;
 
+    //sets to store ConstraintViolation objects for validation errors
     Set<ConstraintViolation<Location>> violations = new HashSet<>();
 
     //method handles HTTP GET requests to "/locations"
@@ -38,6 +39,7 @@ public class LocationController {
         List<Location> locations = locationService.getAllLocations();
         //adds list of locations as an attribute to model for use in view
         model.addAttribute("locations", locations);
+        //initializes violations as empty HashSet
         violations = new HashSet<>();
         //returns view "locations" to display list of locations
         return "locations";
@@ -48,32 +50,38 @@ public class LocationController {
     public String displayAddLocation(Model model) {
         //adds empty location object as an attribute to model for use in view
         model.addAttribute("location", new Location());
-        //returns view "addLocation" to display the form for adding new location
+        //adds violations set as an attribute to model for displaying validation errors in view
         model.addAttribute("errors", violations);
+        //returns view "addLocation" to display the form for adding new location
         return "addLocation";
     }
 
     //method handles HTTP POST requests to "/addLocation"
     @PostMapping("addLocation")
     public String addLocation(HttpServletRequest request, Model model) {
+        //creates new location object and sets its attributes from data received from the form
         Location location = new Location();
         location.setName(request.getParameter("name"));
         location.setDescription(request.getParameter("description"));
         location.setAddress(request.getParameter("address"));
         location.setLatitude(request.getParameter("latitude"));
         location.setLongitude(request.getParameter("longitude"));
+
+        //adds newly created location object as an attribute to model for use in view
         model.addAttribute("location", location);
 
+        //validates location object using Bean Validation API and stores ay constraint violations in violations set
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);
 
+        //if there are no validation errors, adds location to service and redirects user to "/locations"
         if(violations.isEmpty()) {
             locationService.addLocation(location);
-            return "/locations";
+            return "redirect:/locations";
         }
 
-        //redirects user back to locations list after adding location
-        return "addLocation";
+        //if there are errors, redirects user back to "/addLocation" to display errors and correct the form
+        return "redirect:/addLocation";
     }
 
     //method handles HTTP GET requests to "/editLocation"
@@ -85,6 +93,7 @@ public class LocationController {
         Location location = locationService.getLocationById(id);
         //adds location as an attribute to the model for use in view
         model.addAttribute("location", location);
+        //adds violations set as an attribute to model for displaying validation errors in view
         model.addAttribute("errors", violations);
         //return view "editLocation" to display the form for editing location
         return "editLocation";
@@ -104,15 +113,17 @@ public class LocationController {
         location.setLatitude(request.getParameter("latitude"));
         location.setLongitude(request.getParameter("longitude"));
 
+        //validates location object using Bean Validation API and stores ay constraint violations in violations set
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);
 
+        //if there are no validation errors, adds location to service and redirects user to "/locations"
         if(violations.isEmpty()) {
             locationService.updateLocation(location);
             return "redirect:/locations";
         }
 
-        //redirects user back to locations list after editing the location
+        //if there are errors, redirects user back to "/editLocation" to display errors and correct the form
         return "redirect:/editLocation?id="+id;
     }
 
