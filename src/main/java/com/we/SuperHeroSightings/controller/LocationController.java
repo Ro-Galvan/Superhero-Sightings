@@ -26,7 +26,9 @@ public class LocationController {
     //method handles HTTP GET requests to "/locations"
     @GetMapping("locations")
     public String displayLocations(Model model) {
+        //gets all locations from locationService
         List<Location> locations = locationService.getAllLocations();
+        //adds list of locations as an attribute to model for use in view
         model.addAttribute("locations", locations);
         return "locations";
     }
@@ -35,6 +37,7 @@ public class LocationController {
     @GetMapping("addLocation")
     public String displayAddLocation(Model model) {
         Location location = new Location();
+        //adds list of locations as an attribute to model for use in view
         model.addAttribute("location", location);
         return "addLocation";
     }
@@ -42,10 +45,15 @@ public class LocationController {
     //method handles HTTP POST requests to "/addLocation"
     @PostMapping("addLocation")
     public String addLocation(@Valid Location location, BindingResult result) {
+        //@Valid annotation is used to trigger validation on Location object
+        //BindingResult contains results of validation including any errors occurred
+
+        //if there are errors, return to "addLocation" view to display errors and correct the form
         if(result.hasErrors()) {
             return "addLocation";
         }
 
+        //if there are no errors, add location to locationService and redirect to "/locations"
         locationService.addLocation(location);
         return "redirect:/locations";
     }
@@ -53,18 +61,26 @@ public class LocationController {
     //method handles HTTP GET requests to "/editLocation"
     @GetMapping("editLocation")
     public String displayEditLocation(Integer id, Model model) {
+        //retrieves location with specified id from locationService
         Location location = locationService.getLocationById(id);
+        //adds location as attribute to model for use in view
         model.addAttribute("location", location);
+        //returns view "editLocation" to display the form for editing the location
         return "editLocation";
     }
 
     //method handles HTTP POST requests to "/editLocation"
     @PostMapping("editLocation")
     public String editLocation(@Valid Location location, BindingResult result) {
+        //@Valid annotation is used to trigger validation on Location object
+        //BindingResult contains results of validation including any errors occurred
+
+        //if there are errors, return to "editLocation" view to display errors and correct the form
         if(result.hasErrors()) {
             return "editLocation";
         }
 
+        //if there are no errors, update location to locationService and redirect to "/locations"
         locationService.updateLocation(location);
         return "redirect:/locations";
     }
@@ -72,7 +88,7 @@ public class LocationController {
     //method handles HTTP GET requests to "/deleteLocation"
     @GetMapping("deleteLocation")
     public String deleteLocation(Integer id) {
-        //deleted the location with the specified id from the locationService
+        //deletes the location with the specified id from the locationService
         locationService.deleteLocationById(id);
         //redirects user back to locations list after deleting the location
         return "redirect:/locations";
