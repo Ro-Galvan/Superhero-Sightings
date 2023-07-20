@@ -55,35 +55,60 @@ public class HeroController {
 //        return "redirect:/heroes";
 //    }
 
+
+
+//              **************ADD HERO*************
+    @GetMapping("addHero")
+    public String displayAddHero(Model model) {
+        //adds empty hero object as an attribute to model for use in view
+        model.addAttribute("hero", new Hero());
+        //returns view "addHero" to display the form for adding new hero
+        return "addHero";
+
+//        List<Organization> organizations = heroService.get;
+
+    }
+
+    //method handles HTTP POST requests to "/addLocation"
     @PostMapping("addHero")
-    public String addHero(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String type = request.getParameter("type");
-        String description = request.getParameter("description");
-
-        Hero hero = new Hero();
-        hero.setName(name);
-        hero.setType(type);
-        hero.setDescription(description);
-
+    public String addHero(Hero hero) {
+        //adds new location received from the form to the locationService for storage
         heroService.addHero(hero);
-
+        //redirects user back to locations list after adding location
         return "redirect:/heroes";
     }
+
+//    @PostMapping("addHero")
+//    public String addHero(HttpServletRequest request, Model model) {
+//        Hero hero = new Hero();
+//        hero.setName(name);
+//        hero.setType(type);
+//        hero.setDescription(description);
+//
+//        heroService.addHero(hero);
+//
+//        return "redirect:/heroes";
+////        String name = request.getParameter("name");
+////        String type = request.getParameter("type");
+////        String description = request.getParameter("description");
+//
+////                List<Organization> organizationArrayList = new ArrayList<>();
+////        for(String orgId : organizationIds) {
+////            organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(orgId)));
+////        }
+//    }
 
     /**
      * We take in the ID from the URL and a Model so we can send data to the page.
      * We use the ID to get the Hero and add it to the Model.
      * Finally, we return courseDetail, which will send us to the heroDetail.html page.
-     * @param id
-     * @param model
-     * @return
+     *
      */
-    @GetMapping("heroDetail")
-    public String heroDetail(Integer id, Model model) {
+    @GetMapping("detailHero")
+    public String detailHero(Integer id, Model model) {
         Hero hero = heroService.getHeroByID(id);
         model.addAttribute("hero", hero);
-        return "heroDetail";
+        return "detailHero";
     }
 
 }
