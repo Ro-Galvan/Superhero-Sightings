@@ -23,10 +23,10 @@ public class Location {
     private String address;
     @NotBlank(message = "Latitude must not be blank")
     @Size(max = 10, message = "Latitude must be fewer than 10 characters")
-    private String longitude;
+    private String latitude;
     @NotBlank(message = "Longitude must not be blank")
     @Size(max = 10, message = "Longitude must be fewer than 10 characters")
-    private String latitude;
+    private String longitude;
 
     public int getId() {
         return id;
