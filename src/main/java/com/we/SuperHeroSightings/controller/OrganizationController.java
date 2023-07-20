@@ -46,12 +46,12 @@ public class OrganizationController {
     @PostMapping("/organizations/add")
     public String addOrganization(HttpServletRequest request, Model model){
         Organization org = new Organization();
-        org.setName(request.getParameter("name"));
+        org.setName(capitalizeInput(request.getParameter("name")));
         org.setType(request.getParameter("type"));
-        org.setDescription(request.getParameter("description"));
+        org.setDescription(capitalizeInput(request.getParameter("description")));
         org.setAddress(request.getParameter("address"));
         org.setPhone(request.getParameter("phone"));
-        org.setContact(request.getParameter("contact"));
+        org.setContact(capitalizeInput(request.getParameter("contact")));
         addedObj = org;
         model.addAttribute("addedObj", addedObj);
 
@@ -79,12 +79,12 @@ public class OrganizationController {
     public String editOrganization(HttpServletRequest request){
         int id = Integer.parseInt(request.getParameter("id"));
         Organization org = service.getOrganizationByID(id);
-        org.setName(request.getParameter("name"));
+        org.setName(capitalizeInput(request.getParameter("name")));
         org.setType(request.getParameter("type"));
-        org.setDescription(request.getParameter("description"));
+        org.setDescription(capitalizeInput(request.getParameter("description")));
         org.setAddress(request.getParameter("address"));
         org.setPhone(request.getParameter("phone"));
-        org.setContact(request.getParameter("contact"));
+        org.setContact(capitalizeInput(request.getParameter("contact")));
 
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(org);
@@ -112,6 +112,10 @@ public class OrganizationController {
         service.deleteOrganizationByID(id);
 
         return "redirect:/organizations";
+    }
+
+    private String capitalizeInput(String str){
+        return str.length() == 0 ? "" : str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
 }
