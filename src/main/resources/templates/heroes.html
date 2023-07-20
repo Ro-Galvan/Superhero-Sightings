@@ -57,18 +57,13 @@
                         <td th:text="${hero.name}">Hero/Villain</td>
                         <td th:text="${hero.type}">Type</td>
                         <td th:text="${hero.power.name}">Power</td>
-                        <td><a href="#" th:href="@{/heroDetail(id=${hero.id})}">Details</a></td>
+                        <td><a href="#" th:href="@{/detailHero(id=${hero.id})}">Details</a></td>
                         <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
                         <td><a href="#" th:href="@{/deleteHero(id=${hero.id})}">Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
-                <a href="addHero">
-<!--                <a href="/heroes/addHero">-->
-<!--                <a href="#" th:href="@{/addHero}">-->
-                    <button type="submit" class="btn btn-primary">Add Hero</button>
-<!--                    <button type="submit" class="btn btn-primary"><a href="#" th:href="@{/addHero}">Add Hero</a></button>-->
-                </a>
+                <a href="#" th:href="@{/addHero}" class="btn btn-primary mb-3">Add Hero</a>
             </div>
         </div>
 
