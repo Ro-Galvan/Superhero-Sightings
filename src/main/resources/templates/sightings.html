@@ -57,7 +57,7 @@
                 <tr th:each="sighting: ${sightings}">
                     <td th:text="${sighting.hero.name}">Hero/Villain Name</td>
                     <td th:text="${sighting.location.address}">Location</td>
-                    <td th:text="${sighting.date}">Sighting Date</td>
+                    <td th:text="${#temporals.format(sighting.date,'dd-MM-yyyy')}">Sighting Date</td>
                     <td><a href="#" th:href="@{/sightingDetails(id=${sighting.id})}">Details</a></td>
                     <td><a href="#" th:href="@{/editSighting(id=${sighting.id})}">Edit</a></td>
                     <td><a href="#" th:href="@{/deleteSighting(id=${sighting.id})}">Delete</a></td>
@@ -79,8 +79,14 @@
                     <label for="address" class="col-3 col-form-label">
                         Display Sightings by Date</label>
                     <div class="col-4">
-                        <input type="datetime-local" name="date" id="date" max="2023-07-20" class="form-control">                                
+                        <input type="datetime-local" name="date" id="date" 
+                               max="2023-07-20" class="form-control">                                
                     </div>
+                    <!-- <div th:if="${#fields.hasErrors('sighting.date')}">
+                        <p th:each="error : ${#fields.errors('sighting.date')}" 
+                           class="alert alert-danger" th:text="${error}">
+                            Bad date </p>
+                    </div> -->
                 </div> 
 
                 <button type="submit" class="btn btn-primary">Search</button>
