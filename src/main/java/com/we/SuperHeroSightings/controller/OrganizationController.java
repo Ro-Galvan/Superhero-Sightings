@@ -70,10 +70,8 @@ public class OrganizationController {
     public String displayEditOrganization(HttpServletRequest request, Model model){
         int id = Integer.parseInt(request.getParameter("id"));
         Organization organization = service.getOrganizationByID(id);
-        System.out.print("---------");
-        System.out.print(organization);
-        System.out.print("---------");
         model.addAttribute("organization", organization);
+        model.addAttribute("errors", violations);
         return "editOrganization";
     }
 
@@ -88,9 +86,15 @@ public class OrganizationController {
         org.setPhone(request.getParameter("phone"));
         org.setContact(request.getParameter("contact"));
 
-        service.updateOrganization(org);
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(org);
 
-        return "redirect:/organizations";
+        if(violations.isEmpty()) {
+            service.updateOrganization(org);
+            return "redirect:/organizations";
+        }
+
+        return "redirect:/organizations/edit?id="+id;
     }
 
     @GetMapping("/organizations/details")
