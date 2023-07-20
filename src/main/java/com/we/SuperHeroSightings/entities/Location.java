@@ -1,7 +1,6 @@
 
 package com.we.SuperHeroSightings.entities;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
