@@ -35,7 +35,12 @@
             <a href="/sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-    <!-- Add Organization-->
+    <!-- Edit Organization-->
+    <div class="col-12 m-1 text-center"
+         th:if="${!errors.isEmpty()}">
+        <p class="alert alert-danger" th:each="error : ${errors}"
+           th:text="${error.message}">Error message</p>
+    </div>
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
             <div class="text-center">
@@ -54,9 +59,9 @@
                         <div class="form-group row">
                             <label for="type" class="col-3 col-form-label">Type</label>
                             <div class="col-9">
-                                <select name="type" id="type" class="form-control" th:value="${organization.type}">
-                                    <option value="Hero">Hero</option>
-                                    <option value="Villain">Villain</option>
+                                <select name="type" id="type" class="form-control" />
+                                    <option value="Hero" th:selected="${organization.type.startsWith('H')}">Hero</option>
+                                    <option value="Villain" th:selected="${organization.type.startsWith('V')}">Villain</option>
                                 </select>
                             </div>
                         </div>
