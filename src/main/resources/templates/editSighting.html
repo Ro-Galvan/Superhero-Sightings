@@ -21,26 +21,26 @@
     </div>
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
-            <a href="/heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
+            <a href="heroes" class="btn btn-outline-primary btn-lg">Heroes</a>
         </div>
         <div class="col text-center m-3">
-            <a href="/powers" class="btn btn-outline-primary btn-lg">Powers</a>
+            <a href="powers" class="btn btn-outline-primary btn-lg">Powers</a>
         </div>
         <div class="col text-center m-3">
-            <a href="/locations" class="btn btn-outline-primary btn-lg">Locations</a>
+            <a href="locations" class="btn btn-outline-primary btn-lg">Locations</a>
         </div>
         <div class="col text-center m-3">
-            <a href="/organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+            <a href="organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
         </div>
         <div class="col text-center m-3">
-            <a href="/sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+            <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
 
     <div class="row m-4 border border-dark">
         <div class="col text-center m-3">
             <div class="text-center">
-                <h2>Edit Sighting</h2>
+                <h2>Edit Sighting of <label th:text="${sighting.hero.name}"></label></h2>
                 <br>
                 <div class="col-7 text-center m-auto">
                     <form th:action="@{editSighting(id=${sighting.id})}" method="POST">
@@ -51,7 +51,8 @@
                                 <select id="hero" name="heroId" class="form-control" >
                                     <option th:each="hero : ${heroes}"
                                             th:value="${hero.id}"
-                                            th:text="${hero.name}">
+                                            th:text="${hero.name}"
+                                             th:selected="${sighting.hero.id == hero.id}">
                                         -- Select a Hero/Villain</option>
                                 </select>
                             </div>   
@@ -80,12 +81,13 @@
                         
                         
                         <div class="form-group row">
-                            <label for="address" class="col-3 col-form-label">
+                            
+                            <label for="date" class="col-3 col-form-label">
                                 Date:</label>
-                            <div class="col-9">
-                                <input type="date" name="date" id="date" max="2023-07-20" class="form-control"
+                                <div class="col-9">
+                                <input type="datetime-local" name="date" id="date" class="form-control"
                                        th:value="${sighting.date}">                                
-                            </div>
+                            </div> 
                         </div>                            
                         <br>
                         <button type="submit" class="btn btn-primary">Edit Sighting</button>
