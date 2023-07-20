@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Hero</title>
+    <title>powers</title>
 </head>
 <body>
 <!-- Main Body of Page -->
@@ -34,11 +34,39 @@
         <div class="col text-center m-3">
             <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
-    </div>
-    <div class="row m-4">
-        <div class="col text-center border border-dark">
-            <p>Welcome to Super Sightings! Here you can report and view super hero and super villain sightings!</p>
+
+        <!--  Power body-->
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Power</th>
+                        <th>Description:</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="power : ${powers}">
+                        <td th:text="${power.id}">ID</td>
+                        <td th:text="${power.name}">Power</td>
+                        <td th:text="${power.description}">Description</td>
+                        <td>Details</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <div class="row m-4">
+            <a href="addPower" class="btn btn-primary">Add Power</a>
+        </div>
+    </div>
 </div>
 <!-- End main body -->
 

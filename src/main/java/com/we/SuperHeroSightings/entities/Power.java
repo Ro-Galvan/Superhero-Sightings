@@ -12,7 +12,11 @@ import javax.validation.constraints.Size;
 public class Power {
     
     private int id;
+    @NotBlank(message = "Please Enter Power.")
+    @Size(max = 50, message = "Power Name cannot be over 50 characters.")
     private String name;
+    @NotBlank(message = "Please Enter A Description.")
+    @Size(max = 50, message = "Description cannot be more than 50 characters.")
     private String description;
 
     public int getId() {
