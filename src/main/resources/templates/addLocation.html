@@ -38,6 +38,11 @@
 
     <!-- Add Location Form -->
     <div class="row m-4">
+        <div class="col-12 m-1 text-center"
+             th:if="${!errors.isEmpty()}">
+            <p class="alert alert-danger" th:each="error : ${errors}"
+               th:text="${error.message}">Error message</p>
+        </div>
         <div class="col text-center border border-dark">
             <h2 class="mt-3 mb-3">Add Location</h2>
             <form action="/addLocation" method="POST">
