@@ -46,6 +46,35 @@ public class SightingsController {
         List<Sighting> sightings = sightingsService.getAllSightings();
         model.addAttribute("sightings", sightings);
         
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("locations", locations);
+        
+        return "sightings";
+    }
+    
+    @GetMapping("sightingsByLocation")
+    public String getSightingByLocation(Integer locationId, Model model, HttpServletRequest request) {  
+        Location location = locationService.getLocationById(locationId);
+        List<Sighting> sightings = sightingsService.getSightingsByLocation(location);
+        model.addAttribute("sightings", sightings);
+        
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("locations", locations);
+        
+        return "sightings";
+    }
+    
+    @GetMapping("sightingsByDate")
+    public String getSightingByDate(Model model, HttpServletRequest request) { 
+        
+        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("date"));
+        
+        List<Sighting> sightings = sightingsService.getSightingsByDate(ldt);
+        model.addAttribute("sightings", sightings);
+        
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("locations", locations);
+        
         return "sightings";
     }
     
@@ -96,6 +125,7 @@ public class SightingsController {
         return "editSighting";
         
     }
+    
     @PostMapping("editSighting")
     public String editSighting(Integer id, HttpServletRequest request) {
         Sighting sighting = sightingsService.getSightingByID(id);
@@ -127,5 +157,7 @@ public class SightingsController {
         model.addAttribute("sighting", sighting);
         return "sightingDetails";
     }
+    
+    
 
 }
