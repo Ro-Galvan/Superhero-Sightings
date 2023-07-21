@@ -37,46 +37,48 @@
     </div>
     <!--   *********** Details *********** -->
     <div class="row m-4 border border-dark">
-<!--        <div class="col-6 text-right"><strong>ID</strong></div>-->
-<!--        <div class="col-6 text-left">-->
-<!--            <span th:text="${hero.id}">display id</span>-->
-<!--        </div>-->
-
-        <div class="col-6 text-right"><strong>Name</strong></div>
-        <div class="col-6 text-left">
-            <span th:text="${hero.name}">Hero/Villain</span>
+<!--added margin top and bottom to help with spacing-->
+        <div class="col-6 text-right mt-3 mb-3"><strong>Hero/Villain:</strong></div>
+        <div class="col-6 text-left mt-3 mb-3">
+            <span th:text="${hero.name}">display Hero/Villain</span>
         </div>
 
-        <div class="col-6 text-right"><strong>Description</strong></div>
-        <div class="col-6 text-left">
+        <div class="col-6 text-right mb-3"><strong>Type:</strong></div>
+        <div class="col-6 text-left mb-3">
+            <span th:text="${hero.type}">display Type</span>
+        </div>
+
+        <div class="col-6 text-right mb-3"><strong>Description:</strong></div>
+        <div class="col-6 text-left mb-3">
             <span th:text="${hero.description}">display description</span>
         </div>
 
-        <div class="col-6 text-right"><strong>Power</strong></div>
-        <div class="col-6 text-left">
-            <span th:text="${hero.name}">display Power</span>
+        <div class="col-6 text-right mb-3"><strong>Power:</strong></div>
+        <div class="col-6 text-left mb-3">
+            <span th:text="${hero.power.name}">display Power</span>
         </div>
                     <!--        Organizations GO HERE-->
-        <!--        <div class="col-6 text-right"><strong>Organizations</strong></div>-->
-        <!--        <div class="col-6 text-left">-->
-        <!--                    <span th:each="organization : ${hero.organization}">-->
-        <!--                        <span th:text="${student.firstName + ' ' + student.lastName}">-->
-        <!--                            display student</span><br/>-->
-        <!--                    </span>-->
-        <!--        </div>-->
+        <div class="col-6 text-right mb-3"><strong>Organizations:</strong></div>
+        <div class="col-6 text-left mb-3">
+                    <span th:each="organization : ${organizations}">
+                        <span th:text="${organization.name}">
+                            display organizations</span><br/>
+                    </span>
+        </div>
 
                 <!--        SIGHTINGS GO HERE-->
-<!--        <div class="col-6 text-right mb-3"><strong>Heroes Seen At Location:</strong></div>-->
-<!--        <div class="col-6 text-left mb-3">-->
-<!--                    <span th:each="hero : ${heroes}">-->
-<!--                        <span th:text="${hero.name}">-->
-<!--                            display locations</span><br/>-->
-<!--                    </span>-->
-<!--        </div>-->
+        <div class="col-6 text-right mb-3"><strong>Sightings:</strong></div>
+        <div class="col-6 text-left mb-3">
+                    <span th:each="sighting : ${sightings}">
+                        <span th:text="${sighting.location.name}">
+                            display locations</span><br/>
+                    </span>
+        </div>
 
-        <div class="col-10 text-center m-3">
-            <a href="#" th:href="@{/editHero(id=${hero.id})}" class="btn btn-primary btn-md">Edit</a>
-            <a href="#" th:href="@{/deletePower(id=${hero.id})}" class="btn btn-danger btn-md">Delete</a>
+        <div class="col-12 text-center m-3">
+            <a href="#" th:href="@{/editHero(id=${hero.id})}" class="btn btn-primary btn-md m-3">Edit</a>
+            <a href="#" th:href="@{/deletePower(id=${hero.id})}" class="btn btn-danger btn-md m-3">Delete</a>
+            <a href="#" th:href="@{/heroes}" class="btn btn-secondary btn-md m-3">Back To Locations</a>
         </div>
 
     </div>

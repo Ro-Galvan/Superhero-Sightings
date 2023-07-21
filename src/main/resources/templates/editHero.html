@@ -15,7 +15,7 @@
 <div class="container">
     <div class="row m-4">
         <div class="col text-center border border-dark">
-<!--            taking to index page-->
+            <!--            taking to index page-->
             <h1><a href="/" class="text-dark">Hero Education and Relationship Organization </a></h1>
         </div>
     </div>
@@ -43,9 +43,9 @@
     <div class="row m-4">
         <div class="col text-center border border-dark">
 
-            <h2 class="mt-3 mb-3">Add Hero</h2>
-<!--           action is the method name-->
-            <form action="addHero" method="POST">
+            <h2 class="mt-3 mb-3">Edit Hero</h2>
+            <!--           action is the method name-->
+            <form action="editHero" method="POST">
 
                 <div class="form-group row">
                     <label for="name" class="col-3 col-form-label">Hero/Villain:</label>
@@ -58,7 +58,7 @@
                     <label for="type" class="col-3 col-form-label">Type:</label>
                     <div class="col-9">
                         <select id="type" name="type" class="form-control" >
-<!--                            disable selected value to see type before clicking drop down -->
+                            <!--              disable selected value to see type before clicking drop down -->
                             <option disabled selected value="">-- Select Type </option>
                             <option value="Hero" th:selected="${hero.type eq 'Hero'}"> Hero </option>
                             <option value="Villain" th:selected ="${hero.type eq 'Villain'}">Villain </option>
