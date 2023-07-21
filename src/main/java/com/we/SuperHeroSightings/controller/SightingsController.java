@@ -1,10 +1,6 @@
 
 package com.we.SuperHeroSightings.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.we.SuperHeroSightings.entities.Hero;
 import com.we.SuperHeroSightings.entities.Location;
 import com.we.SuperHeroSightings.entities.Sighting;
@@ -17,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.we.SuperHeroSightings.service.LocationService;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -28,8 +24,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import org.springframework.validation.FieldError;
 
 //    It must have a screen(s) to create, view, edit, and delete superhero/supervillain sighting 
@@ -50,6 +44,7 @@ public class SightingsController {
     
     /*This Validator will look at the annotations we have added to the entity and check if the field matches them. 
     Any data that does not match is added as an error to a list it gives back to us. */
+    
     Set<ConstraintViolation<Sighting>> violations = new HashSet<>();
     
     @GetMapping("sightings")
@@ -59,7 +54,7 @@ public class SightingsController {
         
         List<Location> locations = locationService.getAllLocations();
         model.addAttribute("locations", locations);
-        
+                
         return "sightings";
     }
     
@@ -104,30 +99,26 @@ public class SightingsController {
     
     @PostMapping("addSighting")
     public String addSighting(Model model, HttpServletRequest request) {     
-         
-        String heroId = request.getParameter("heroId");
-        String locationId = request.getParameter("locationId");
-        
         Sighting sighting = new Sighting();
-        sighting.setHero(heroService.getHeroByID(Integer.parseInt(heroId)));
-        sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));  
+        sighting.setDescription(request.getParameter("description"));        
 
+        String heroId = request.getParameter("heroId");
+        String locationId = request.getParameter("locationId");        
+
+        sighting.setHero(heroService.getHeroByID(Integer.parseInt(heroId)));
+        sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));
         
         if(!request.getParameter("date").equals("")){
             sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
         }else{
             return "redirect:/addSighting";
         }
-//        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("date"), DateTimeFormatter.BASIC_ISO_DATE);
-//        sighting.setDate(ldt);
-        //sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
-        sighting.setDescription(request.getParameter("description"));
         
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(sighting);
 
-        if(violations.isEmpty()) {
-            sightingsService.addSighting(sighting);
+        if(violations.isEmpty()) {                 
+            sightingsService.addSighting(sighting);            
             return "redirect:/sightings";
         }
                 
@@ -137,7 +128,7 @@ public class SightingsController {
     
     //    It must have a screen(s) to view
     @GetMapping("editSighting")
-    public String getSightingById(Integer id, Model model) {
+    public String getEditSightingById(Integer id, Model model) {
         Sighting sighting;
         if(id != null){
             sighting = sightingsService.getSightingByID(id);
@@ -151,7 +142,6 @@ public class SightingsController {
         model.addAttribute("sighting", sighting);
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
-        model.addAttribute("errors", violations);
         
         return "editSighting";
         
@@ -159,29 +149,55 @@ public class SightingsController {
     
     @PostMapping("editSighting")
     public String editSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
-        int heroId = Integer.parseInt(request.getParameter("heroId"));
-        int locationId = Integer.parseInt(request.getParameter("locationId")); 
-
-        if (heroId != 0 && locationId !=0) {
-            sighting.setHero(heroService.getHeroByID(heroId));
-            sighting.setLocation(locationService.getLocationById(locationId));
-        } else {
-            FieldError error = new FieldError("sighting", "description", "Must include one description");
-            result.addError(error);
-        }
-
+        
         if (result.hasErrors()) {
-            List<Sighting> sightings = sightingsService.getAllSightings();
-            model.addAttribute("sightings", sightings);
+            List<Hero> heroes = heroService.getAllHeroes();
+            model.addAttribute("heroes", heroes);
 
             List<Location> locations = locationService.getAllLocations();
             model.addAttribute("locations", locations);
-            return "sightings";
+                        
+            return "editSighting";
         }
+                
+        int heroId = Integer.parseInt(request.getParameter("heroId"));
+        int locationId = Integer.parseInt(request.getParameter("locationId")); 
+
+        sighting.setHero(heroService.getHeroByID(heroId));
+        sighting.setLocation(locationService.getLocationById(locationId));
+        sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
 
         sightingsService.updateSighting(sighting);
 
         return "redirect:/sightings";
+    }
+    
+    static String getTime(String time)
+    {
+        String format;
+ 
+        // Parsing hours, minutes and seconds in array
+        String[] arr = time.split(" ");
+        String hhmm = arr[1];
+        String[] arrHHMM = hhmm.split(":");
+        int hh = Integer.parseInt(arr[0]);
+ 
+        // Converting hours into integer
+ 
+        if (hh > 12) {
+            format = "PM";
+        }
+        else if (hh == 00) {
+            format = "AM";
+        }
+        else if (hh == 12) {
+            format = "PM";
+        }
+        else {
+            format = "AM";
+        }
+
+        return format;
     }
     
     /*@PostMapping("editSighting")

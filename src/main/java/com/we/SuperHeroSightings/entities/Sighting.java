@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -24,16 +25,19 @@ public class Sighting {
     
     private int id;
     
-    @NotBlank(message = "Description must not be empty.")
+    @NotBlank(message = "Description must not be blank.")
     @Size(max = 255, message="Description must be fewer than 255 characters")
     private String description;  
     
-    //@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    
     //@NotBlank(message = "Please provide a date.")
-    //@NotNull
 //    @NotEmpty //validates that the property is not null or empty; can be applied to String, Collection, Map or Array values.
     //@JsonDeserialize(using = localDateTimeDeserializer.class)
 //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    //@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull(message = "The date must not be empty")
     @Past(message = "The date must be in the past")
     private LocalDateTime date;
     

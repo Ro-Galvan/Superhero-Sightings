@@ -57,7 +57,7 @@
                 <tr th:each="sighting: ${sightings}">
                     <td th:text="${sighting.hero.name}">Hero/Villain Name</td>
                     <td th:text="${sighting.location.address}">Location</td>
-                    <td th:text="${#temporals.format(sighting.date,'dd-MM-yyyy')}">Sighting Date</td>
+                    <td th:text="${#temporals.format(sighting.date,'dd-MM-yyyy HH:mm:ss')}">Sighting Date</td>
                     <td><a href="#" th:href="@{/sightingDetails(id=${sighting.id})}">Details</a></td>
                     <td><a href="#" th:href="@{/editSighting(id=${sighting.id})}">Edit</a></td>
                     <td><a href="#" th:href="@{/deleteSighting(id=${sighting.id})}">Delete</a></td>

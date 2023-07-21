@@ -43,7 +43,7 @@
         
         <div class="col text-center m-3">
             <div class="text-center">
-                <h2>Edit Sighting of <label th:text="${sighting.hero.name}"></label></h2>
+                <h2>Edit Sighting</label></h2>
                 <br>
                 <div class="col-7 text-center m-auto">
                     <form th:action="@{editSighting(id=${sighting.id})}" method="POST">
@@ -79,7 +79,7 @@
                                        id="description" class="form-control" 
                                        th:value="${sighting.description}"/>
                                 <div th:if="${#fields.hasErrors('sighting.description')}">
-                                    <p th:each="error : ${#fields.errors('sighting.description')}"
+                                    <p th:each="error: ${#fields.errors('sighting.description')}"
                                        class="alert alert-danger" th:text="${error}">
                                         Bad description</p>
                                 </div>
@@ -94,7 +94,12 @@
                                 Date:</label>
                                 <div class="col-9">
                                 <input type="datetime-local" name="date" id="date" class="form-control"
-                                       th:value="${sighting.date}">                                
+                                       th:value="${sighting.date}">  
+                                <div th:if="${#fields.hasErrors('sighting.date')}">
+                                    <p th:each="error: ${#fields.errors('sighting.date')}"
+                                       class="alert alert-danger" th:text="${error}">
+                                        Bad description</p>
+                                </div>
                             </div> 
                         </div>                            
                         <br>
