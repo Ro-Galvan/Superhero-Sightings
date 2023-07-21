@@ -36,7 +36,7 @@ public class Sighting {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
     //@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "The date must not be empty")
     @Past(message = "The date must be in the past")
     private LocalDateTime date;

@@ -72,8 +72,14 @@ public class SightingsController {
     
     @GetMapping("sightingsByDate")
     public String getSightingByDate(Model model, HttpServletRequest request) { 
+        LocalDateTime ldt;
         
-        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("date"));
+        if(!request.getParameter("date").equals("")){
+            ldt = LocalDateTime.parse(request.getParameter("date"));
+        }
+        else{
+            return "sightings";
+        }
         
         List<Sighting> sightings = sightingsService.getSightingsByDate(ldt);
         model.addAttribute("sightings", sightings);
@@ -110,9 +116,10 @@ public class SightingsController {
         
         if(!request.getParameter("date").equals("")){
             sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
-        }else{
-            return "redirect:/addSighting";
         }
+//        else{
+//            return "redirect:/addSighting";
+//        }
         
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(sighting);
@@ -171,78 +178,6 @@ public class SightingsController {
 
         return "redirect:/sightings";
     }
-    
-    static String getTime(String time)
-    {
-        String format;
- 
-        // Parsing hours, minutes and seconds in array
-        String[] arr = time.split(" ");
-        String hhmm = arr[1];
-        String[] arrHHMM = hhmm.split(":");
-        int hh = Integer.parseInt(arr[0]);
- 
-        // Converting hours into integer
- 
-        if (hh > 12) {
-            format = "PM";
-        }
-        else if (hh == 00) {
-            format = "AM";
-        }
-        else if (hh == 12) {
-            format = "PM";
-        }
-        else {
-            format = "AM";
-        }
-
-        return format;
-    }
-    
-    /*@PostMapping("editSighting")
-    public String editSighting(@Valid Sighting sighting, Integer id, BindingResult result, HttpServletRequest request, Model model) {
-//        try{
-//            
-//        }
-//        catch(DataAccessException ex){
-//            
-//        }        
-        
-        if(id != null){
-            sighting = sightingsService.getSightingByID(id);
-            String heroId = request.getParameter("heroId");
-            String locationId = request.getParameter("locationId");
-            sighting.setHero(heroService.getHeroByID(Integer.parseInt(heroId)));
-            sighting.setLocation(locationService.getLocationById(Integer.parseInt(locationId)));                             
-        } 
-        if(!request.getParameter("date").equals("")){
-            sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
-        }
-        else{
-            return "redirect:/editSighting";
-        }
-        
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(sighting);
-
-        if(violations.isEmpty()) {
-            sighting.setDescription(request.getParameter("description")); 
-            sightingsService.updateSighting(sighting);
-            return "redirect:/editSightings";
-        }
-        
-        if(result.hasErrors()) {
-            return "editSightings";
-        }     
-
-//        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("date"), DateTimeFormatter.BASIC_ISO_DATE);
-//        sighting.setDate(ldt);       
-        //sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
-        //sightingsService.updateSighting(sighting);
-        
-        return "redirect:/sightings";
-    }*/
     
     //    It must have a screen(s) to delete
     @GetMapping("deleteSighting")
