@@ -84,37 +84,62 @@ public class HeroController {
 
     //              **************EDIT HERO*************
     @GetMapping("editHero")
-    public String getAddHeroEditPage(Model model) {
-//        getting a list of all available powers & organizations
+    public String getAddHeroEditPage(Integer id, Model model) {
+//        get Hero as well as the lists of powers and organizations so we can display all of them for the Edit
+        Hero hero = heroService.getHeroByID(id);
         List<Power> powers = powerService.getAllPowers();
         List<Organization> organizations = orgService.getAllOrganizations();
-        //adds empty hero object / List of org & powers as an attribute to model to display to web
+        //adds hero selected by ID object, org & powers as an attribute to model to display to web
         model.addAttribute("powers", powers);
         model.addAttribute("organizations", organizations);
-        model.addAttribute("hero", new Hero());
-        //returns view "editHero" to display the form for editing new hero
+        model.addAttribute("hero", hero);
+        //returns view "editHero" to display the form for editing hero by id
         return "editHero";
 
     }
 
+
+//    @PostMapping("editHero")
+//    public String editHero(Hero hero, HttpServletRequest request) {
+//        System.out.println("does this work and hit the edit hero method for POST");
+////         pull out the powerIDs data from the HttpServletRequest
+//        String powerIDs = request.getParameter("power");
+//        //        use the getParameterValues method to get a string array of organizationIDs
+//        String[] organizationIDs = request.getParameterValues("organizationID");
+//
+//        hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
+//
+//        List<Organization> organizationArrayList = new ArrayList<>();
+//        for(String organizationID : organizationIDs) {
+//            organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(organizationID)));
+//        }
+//        hero.setOrganizations(organizationArrayList);
+//
+//        heroService.updateHero(hero);
+//
+//        return "redirect:/heroes";
+//    }
     @PostMapping("editHero")
-    public String editHero(HttpServletRequest request, Model model) {
-        String powerIDs = request.getParameter("powerID");
+    public String editHero(Integer id, HttpServletRequest request) {
+        Hero hero = heroService.getHeroByID(id);
+//         pull out the powerIDs data from the HttpServletRequest
+        String powerIDs = request.getParameter("power");
+        //        use the getParameterValues method to get a string array of organizationIDs
         String[] organizationIDs = request.getParameterValues("organizationID");
 
-        Hero hero = new Hero();
         hero.setName(request.getParameter("name"));
         hero.setType(request.getParameter("type"));
         hero.setDescription(request.getParameter("description"));
-        heroService.addHero(hero);
-
         hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
+
 
         List<Organization> organizationArrayList = new ArrayList<>();
         for(String organizationID : organizationIDs) {
             organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(organizationID)));
         }
         hero.setOrganizations(organizationArrayList);
+
+        heroService.updateHero(hero);
 
         return "redirect:/heroes";
     }
