@@ -19,9 +19,9 @@ public class SightingsServiceImpl implements SightingService{
     @Override
     public Sighting getSightingByID(int id) {
         Sighting sighting = sightingsDao.getSightingByID(id);
-//        if(sighting == null){
-//            
-//        }
+        if (sighting == null){
+            throw new RuntimeException("Could not find the sighting with the id " +id+".");
+        }
         return sighting;
     }
 
