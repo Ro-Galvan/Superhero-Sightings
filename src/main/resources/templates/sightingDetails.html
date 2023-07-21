@@ -68,7 +68,7 @@
 
             <div class="col-6 text-right"><strong>Date:</strong></div>
             <div class="col-6 text-left">
-                <span th:text="${sighting.date}">display date</span>
+                <span th:text="${#temporals.format(sighting.date,'dd-MM-yyyy HH:mm:ss')}">display date</span>
             </div>
         </div>
         <br>

@@ -1,9 +1,18 @@
 
 package com.we.SuperHeroSightings.entities;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,9 +24,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Sighting {
     
     private int id;
+    
+    @NotBlank(message = "Description must not be blank.")
+    @Size(max = 255, message="Description must be fewer than 255 characters")
     private String description;  
+    
+    
+    //@NotBlank(message = "Please provide a date.")
+//    @NotEmpty //validates that the property is not null or empty; can be applied to String, Collection, Map or Array values.
+    //@JsonDeserialize(using = localDateTimeDeserializer.class)
+//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    //@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    @NotNull(message = "The date must not be empty")
+    @Past(message = "The date must be in the past")
     private LocalDateTime date;
-    private Hero hero;
+    
+    private Hero hero;    
     private Location location;
 
 
@@ -109,3 +133,19 @@ public class Sighting {
     
     
 }
+//
+//class localDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
+//  private static final long serialVersionUID = 9152770723354619045L;
+//  public localDateTimeDeserializer() { this(null);}
+//  protected localDateTimeDeserializer(Class<LocalDateTime> type) { super(type);}
+//
+//  @Override
+//  public LocalDateTime deserialize(JsonParser parser, DeserializationContext context)
+//      throws IOException, JsonProcessingException {
+//    if (parser.getValueAsString().isEmpty()) {
+//       return null;
+//    }
+//    return LocalDateTime.parse(parser.getValueAsString(),
+//                                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
+//  }
+//}

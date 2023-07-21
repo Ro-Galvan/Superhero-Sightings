@@ -13,6 +13,7 @@
 <body>
 <!-- Main Body of Page -->
 <div class="container">
+    
     <div class="row m-4">
         <div class="col text-center border border-dark">
             <h1><a href="/" class="text-dark">Hero Education and Relationship Organization</a></h1>
@@ -38,7 +39,11 @@
 </div>
 <!-- End main body -->
 <div class="container">   
-    
+    <div class="col-12 m-1 text-center"
+        th:if="${!errors.isEmpty()}">
+       <p class="alert alert-danger" th:each="error: ${errors}"
+          th:text="${error.message}">Error message</p>
+   </div>
     <div class="row m-4 border border-dark">
             <div class="col text-center m-3">
                 <div class="text-center">
@@ -81,10 +86,11 @@
                         
                         
                         <div class="form-group row">
-                            <label for="address" class="col-3 col-form-label">
+                            <label for="date" class="col-3 col-form-label">
                                 Date:</label>
                             <div class="col-9">
-                                <input type="datetime-local" name="date" id="date" max="${th:value(localDateTime)}" class="form-control">                                
+                                <input type="datetime-local" name="date" id="date" class="form-control">  
+                                
                             </div>
                         </div>                        
                         
