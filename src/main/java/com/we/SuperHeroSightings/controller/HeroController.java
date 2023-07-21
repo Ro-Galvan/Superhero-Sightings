@@ -55,8 +55,8 @@ public class HeroController {
 
     @PostMapping("addHero")
     public String addHero(HttpServletRequest request, Model model) {
-//         pull out the teacherId data from the HttpServletRequest
-        String powerIDs = request.getParameter("powerID");
+//         pull out the powerIDs data from the HttpServletRequest
+        String powerIDs = request.getParameter("power");
 //        use the getParameterValues method to get a string array of organizationIDs
         String[] organizationIDs = request.getParameterValues("organizationID");
 
@@ -65,10 +65,10 @@ public class HeroController {
         hero.setName(request.getParameter("name"));
         hero.setType(request.getParameter("type"));
         hero.setDescription(request.getParameter("description"));
-        heroService.addHero(hero);
-//      setting power but using Power Service
         hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
+//      setting power but using Power Service
 
+        model.addAttribute("hero", hero);
 //         create an empty list of organizations, loop through the organizationIds, retrieve each organization, and add it to the list.
         List<Organization> organizationArrayList = new ArrayList<>();
         for(String organizationID : organizationIDs) {
@@ -76,28 +76,10 @@ public class HeroController {
         }
         hero.setOrganizations(organizationArrayList);
 
+        heroService.addHero(hero);
 
         return "redirect:/heroes";
     }
-
-//    ************BACK UP ONE IN CASE I CAN"T GET THE OTHER ONE WORKING******************
-//    @GetMapping("addHero")
-//    public String displayAddHero(Model model) {
-//        //adds empty hero object as an attribute to model for use in view
-//        model.addAttribute("hero", new Hero());
-//        //returns view "addHero" to display the form for adding new hero
-//        return "addHero";
-//    }
-
-    //method handles HTTP POST requests to "/addLocation"
-//    @PostMapping("addHero")
-//    public String addHero(Hero hero) {
-//        //adds new location received from the form to the locationService for storage
-//        heroService.addHero(hero);
-//        //redirects user back to locations list after adding location
-//        return "redirect:/heroes";
-//    }
-//    ************BACK UP ONE IN CASE I CAN"T GET THE OTHER ONE WORKING******************
 
 
     //              **************EDIT HERO*************
