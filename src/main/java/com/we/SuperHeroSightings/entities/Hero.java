@@ -4,6 +4,7 @@ package com.we.SuperHeroSightings.entities;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -12,8 +13,14 @@ import javax.validation.constraints.Size;
  */
 public class Hero {
     private int id;
+    @NotBlank(message = "Hero name must not be empty.")
+    @Size(max = 50, message="Hero name must be less than 50 characters.")
     private String name;
+    @NotBlank(message = "Hero Type must not be blank, please make a selection")
+    @Pattern(regexp = "^(Villain|Hero)$", message = "Type must be selected")
     private String type;
+    @NotBlank(message = "Hero Description must not be blank")
+    @Size(max = 255, message = "Hero Description must be fewer than 255 characters")
     private String description;    
     private Power power;
     private List<Organization> organizations;
