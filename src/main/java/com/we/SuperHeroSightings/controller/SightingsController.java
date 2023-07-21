@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.we.SuperHeroSightings.service.LocationService;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -24,13 +22,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-
-//    It must have a screen(s) to create, view, edit, and delete superhero/supervillain sighting 
-//    (superhero/supervillain, location, and time) in the system.
 
 @Controller
-//@RequestMapping("/")
 public class SightingsController {
 
     @Autowired
@@ -41,9 +34,6 @@ public class SightingsController {
     
     @Autowired
     LocationService locationService;
-    
-    /*This Validator will look at the annotations we have added to the entity and check if the field matches them. 
-    Any data that does not match is added as an error to a list it gives back to us. */
     
     Set<ConstraintViolation<Sighting>> violations = new HashSet<>();
     
@@ -78,6 +68,8 @@ public class SightingsController {
             ldt = LocalDateTime.parse(request.getParameter("date"));
         }
         else{
+            List<Location> locations = locationService.getAllLocations();
+            model.addAttribute("locations", locations);
             return "sightings";
         }
         
@@ -117,9 +109,6 @@ public class SightingsController {
         if(!request.getParameter("date").equals("")){
             sighting.setDate(LocalDateTime.parse(request.getParameter("date")));
         }
-//        else{
-//            return "redirect:/addSighting";
-//        }
         
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(sighting);
@@ -133,7 +122,7 @@ public class SightingsController {
 
     }
     
-    //    It must have a screen(s) to view
+    //    It must have a screen(s) to edit
     @GetMapping("editSighting")
     public String getEditSightingById(Integer id, Model model) {
         Sighting sighting;

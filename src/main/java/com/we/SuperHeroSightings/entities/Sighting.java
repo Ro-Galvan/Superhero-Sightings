@@ -29,13 +29,6 @@ public class Sighting {
     @Size(max = 255, message="Description must be fewer than 255 characters")
     private String description;  
     
-    
-    //@NotBlank(message = "Please provide a date.")
-//    @NotEmpty //validates that the property is not null or empty; can be applied to String, Collection, Map or Array values.
-    //@JsonDeserialize(using = localDateTimeDeserializer.class)
-//    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ssZ", iso = DateTimeFormat.ISO.DATE_TIME)
-    //@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "The date must not be empty")
     @Past(message = "The date must be in the past")
@@ -133,19 +126,3 @@ public class Sighting {
     
     
 }
-//
-//class localDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
-//  private static final long serialVersionUID = 9152770723354619045L;
-//  public localDateTimeDeserializer() { this(null);}
-//  protected localDateTimeDeserializer(Class<LocalDateTime> type) { super(type);}
-//
-//  @Override
-//  public LocalDateTime deserialize(JsonParser parser, DeserializationContext context)
-//      throws IOException, JsonProcessingException {
-//    if (parser.getValueAsString().isEmpty()) {
-//       return null;
-//    }
-//    return LocalDateTime.parse(parser.getValueAsString(),
-//                                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"));
-//  }
-//}
