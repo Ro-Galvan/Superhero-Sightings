@@ -88,10 +88,10 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="organization" class="col-3 col-form-label">
+                    <label for="organizationID" class="col-3 col-form-label">
                         Organization</label>
                     <div class="col-9">
-                        <select id="organization" name="organization[]" class="form-control" multiple>
+                        <select id="organizationID" name="organizationID" class="form-control" multiple>
                             <option th:each="organization : ${organizations}"
                                     th:value="${organization.id}"
                                     th:text="${organization.name}">
