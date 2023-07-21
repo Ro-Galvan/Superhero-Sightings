@@ -6,13 +6,21 @@ import com.we.SuperHeroSightings.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class HeroController {
@@ -26,6 +34,8 @@ public class HeroController {
 
     @Autowired
     SightingService serviceService;
+
+    Set<ConstraintViolation<Hero>> violations = new HashSet<>();
 
 
     @GetMapping("heroes")
@@ -48,6 +58,8 @@ public class HeroController {
         model.addAttribute("powers", powers);
         model.addAttribute("organizations", organizations);
         model.addAttribute("hero", new Hero());
+//        added this for validations
+        model.addAttribute("errors", violations);
         //returns view "addHero" to display the form for adding new hero
         return "addHero";
 
@@ -76,9 +88,17 @@ public class HeroController {
         }
         hero.setOrganizations(organizationArrayList);
 
-        heroService.addHero(hero);
+//        We instantiate our Validator object.
+//        We then pass the full Hero object into the Validator and save the results in a “violations” class variable.
+//        We then check if we found any validation errors; if not, we add the Hero.
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(hero);
 
-        return "redirect:/heroes";
+        if(violations.isEmpty()) {
+            heroService.addHero(hero);
+            return "redirect:/heroes";
+        }
+        return "redirect:/addHero";
     }
 
 
@@ -93,6 +113,7 @@ public class HeroController {
         model.addAttribute("powers", powers);
         model.addAttribute("organizations", organizations);
         model.addAttribute("hero", hero);
+        model.addAttribute("errors", violations);
         //returns view "editHero" to display the form for editing hero by id
         return "editHero";
 
@@ -119,6 +140,7 @@ public class HeroController {
 //
 //        return "redirect:/heroes";
 //    }
+
     @PostMapping("editHero")
     public String editHero(Integer id, HttpServletRequest request) {
         Hero hero = heroService.getHeroByID(id);
@@ -139,10 +161,59 @@ public class HeroController {
         }
         hero.setOrganizations(organizationArrayList);
 
-        heroService.updateHero(hero);
+//        didn't work have to do it a different way
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(hero);
 
-        return "redirect:/heroes";
+        if(violations.isEmpty()) {
+            heroService.updateHero(hero);
+            return "redirect:/heroes";
+        }
+        return "redirect:/editHero?id="+id;
     }
+
+//    tried to handle errors with BindingResult but didn't work
+//    @PostMapping("editHero")
+//    public String editHero(@Valid BindingResult result, Integer id, HttpServletRequest request Model model) {
+//        Hero hero = heroService.getHeroByID(id);
+////         pull out the powerIDs data from the HttpServletRequest
+//        String powerIDs = request.getParameter("power");
+//        //        use the getParameterValues method to get a string array of organizationIDs
+//        String[] organizationIDs = request.getParameterValues("organizationID");
+//
+//        hero.setName(request.getParameter("name"));
+//        hero.setType(request.getParameter("type"));
+//        hero.setDescription(request.getParameter("description"));
+//        hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
+//
+//
+//        List<Organization> organizationArrayList = new ArrayList<>();
+//        if(organizationArrayList != null) {
+//            for(String organizationID : organizationIDs) {
+//                organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(organizationID)));
+//            }
+//        } else {
+//            FieldError error = new FieldError("hero", "organizationArrayList", "Must include one Organization");
+//            result.addError(error);
+//        }
+//        hero.setOrganizations(organizationArrayList);
+//
+//        if(result.hasErrors()) {
+//
+//        }
+//
+////        didn't work have to do it a different way
+////        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+////        violations = validate.validate(hero);
+////
+////        if(violations.isEmpty()) {
+////            heroService.updateHero(hero);
+////            return "redirect:/heroes";
+////        }
+////        return "redirect:/editHero";
+//
+//        return "redirect:/heroes";
+//    }
 
 
     /**
