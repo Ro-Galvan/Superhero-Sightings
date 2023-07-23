@@ -16,6 +16,4 @@ public interface HeroService {
 
     List<Hero> getHeroesByLocation(Location location);
     List<Hero> getHeroesByOrganization(Organization organization);
-
-    void validateHero(Hero hero) throws Exception;
 }

@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HeroMapper implements RowMapper<Hero> {
+//    to map the rows of a ResultSet obtained from a database query to Hero objects
+//    The class HeroMapper is declared, and it specifies that it implements the RowMapper interface with the type parameter Hero.
+//    This means that this class will handle mapping the rows of a ResultSet to Hero objects.
     @Override
     public Hero mapRow(ResultSet rs, int rowNum) throws SQLException {
         Hero hero = new Hero();

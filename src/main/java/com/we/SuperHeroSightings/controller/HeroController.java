@@ -35,6 +35,8 @@ public class HeroController {
     @Autowired
     SightingService serviceService;
 
+//    The ConstraintViolation object holds information about the error; specifically, each one will hold the message of a
+//    validation error it found. In this situation, we would send the full set to the page to process like a list, printing out the errors.
     Set<ConstraintViolation<Hero>> violations = new HashSet<>();
 
 
@@ -107,8 +109,18 @@ public class HeroController {
     public String getAddHeroEditPage(Integer id, Model model) {
 //        get Hero as well as the lists of powers and organizations so we can display all of them for the Edit
         Hero hero = heroService.getHeroByID(id);
+//        Hero heroes = heroService.getHeroByID(id);
         List<Power> powers = powerService.getAllPowers();
         List<Organization> organizations = orgService.getAllOrganizations();
+
+//        need to set organizations to null because Dao/service is returning incomplete organization due to how the mapper is set up
+//        But the hero in getHeroByID(id) has heroes complete including power and organization.
+//        So in editHero.html th:selected="${hero.organizations.contains(organization)} is never true so it doesn't highlight the org options
+//        because organization.members contains list of incomplete objects. Below code is needed:
+        for(Organization organization : organizations) {
+            organization.setMembers(null);
+        }
+
         //adds hero selected by ID object, org & powers as an attribute to model to display to web
         model.addAttribute("powers", powers);
         model.addAttribute("organizations", organizations);
@@ -116,30 +128,7 @@ public class HeroController {
         model.addAttribute("errors", violations);
         //returns view "editHero" to display the form for editing hero by id
         return "editHero";
-
     }
-
-
-//    @PostMapping("editHero")
-//    public String editHero(Hero hero, HttpServletRequest request) {
-//        System.out.println("does this work and hit the edit hero method for POST");
-////         pull out the powerIDs data from the HttpServletRequest
-//        String powerIDs = request.getParameter("power");
-//        //        use the getParameterValues method to get a string array of organizationIDs
-//        String[] organizationIDs = request.getParameterValues("organizationID");
-//
-//        hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
-//
-//        List<Organization> organizationArrayList = new ArrayList<>();
-//        for(String organizationID : organizationIDs) {
-//            organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(organizationID)));
-//        }
-//        hero.setOrganizations(organizationArrayList);
-//
-//        heroService.updateHero(hero);
-//
-//        return "redirect:/heroes";
-//    }
 
     @PostMapping("editHero")
     public String editHero(Integer id, HttpServletRequest request) {
@@ -171,50 +160,6 @@ public class HeroController {
         }
         return "redirect:/editHero?id="+id;
     }
-
-//    tried to handle errors with BindingResult but didn't work
-//    @PostMapping("editHero")
-//    public String editHero(@Valid BindingResult result, Integer id, HttpServletRequest request Model model) {
-//        Hero hero = heroService.getHeroByID(id);
-////         pull out the powerIDs data from the HttpServletRequest
-//        String powerIDs = request.getParameter("power");
-//        //        use the getParameterValues method to get a string array of organizationIDs
-//        String[] organizationIDs = request.getParameterValues("organizationID");
-//
-//        hero.setName(request.getParameter("name"));
-//        hero.setType(request.getParameter("type"));
-//        hero.setDescription(request.getParameter("description"));
-//        hero.setPower(powerService.getPowerById(Integer.parseInt(powerIDs)));
-//
-//
-//        List<Organization> organizationArrayList = new ArrayList<>();
-//        if(organizationArrayList != null) {
-//            for(String organizationID : organizationIDs) {
-//                organizationArrayList.add(orgService.getOrganizationByID(Integer.parseInt(organizationID)));
-//            }
-//        } else {
-//            FieldError error = new FieldError("hero", "organizationArrayList", "Must include one Organization");
-//            result.addError(error);
-//        }
-//        hero.setOrganizations(organizationArrayList);
-//
-//        if(result.hasErrors()) {
-//
-//        }
-//
-////        didn't work have to do it a different way
-////        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-////        violations = validate.validate(hero);
-////
-////        if(violations.isEmpty()) {
-////            heroService.updateHero(hero);
-////            return "redirect:/heroes";
-////        }
-////        return "redirect:/editHero";
-//
-//        return "redirect:/heroes";
-//    }
-
 
     /**
      * handles HTTP GET requests for the URL path /detailHero

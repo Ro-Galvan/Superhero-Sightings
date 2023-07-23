@@ -50,19 +50,4 @@ public class HeroServiceImpl implements HeroService{
         return heroDao.getHerosByOrganization(organization);
     }
 
-    @Override
-    public void validateHero(Hero hero) throws Exception{
-        List<Hero> heroes = heroDao.getAllHeros();
-        boolean isDuplicate = false;
-
-        for (Hero hero1 : heroes){
-            if (hero1.getName().toLowerCase().equals(hero.getName().toLowerCase())) {
-                isDuplicate = true;
-            }
-        }
-        if (isDuplicate) {
-//            TODO add exception later
-//            throw new Exception
-        }
-    }
 }

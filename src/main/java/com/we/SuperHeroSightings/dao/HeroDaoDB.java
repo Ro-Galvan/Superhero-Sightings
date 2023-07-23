@@ -26,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public class HeroDaoDB implements HeroDao {
-    
+
+//    Spring will inject the JdbcTemplate bean into this class, allowing it to execute SQL queries and handle the results.
     @Autowired
     JdbcTemplate jdbc;
 
